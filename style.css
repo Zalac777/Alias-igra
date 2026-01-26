@@ -999,10 +999,10 @@ body {
         font-size: 12px;
     }
     
-    /* Na malim ekranima sakrij imena igrača */
+    /* Na malim ekranima sakrij imena igrača 
     .scoreboard-players {
         display: none;
-    }
+    } */
     
     .scoreboard-points {
         font-size: 14px;
