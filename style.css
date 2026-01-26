@@ -1018,16 +1018,14 @@ body {
     
     /* Gumbi jedan ispod drugog na mobitelu */
     .game-buttons {
-	     displey: flex;
-        flex-wrap: wrap;
+	    flex-direction: row;   /* u isti red */
         gap: 12px;
     }
 
     .game-buttons .game-btn {
-        flex: 1 1 140px;   /* min širina gumba */
+        flex: 1;   /* min širina gumba */
     }
 
-    
     /* NOVI: Touch target size - iOS preporučuje min 44x44px */
     .game-btn {
         min-height: 64px;
