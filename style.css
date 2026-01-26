@@ -448,6 +448,7 @@ body {
 /* Imena igrača */
 .scoreboard-players {
     flex: 1;
+    min-width: 0;   /* KLJUČNO */
     color: var(--color-text-secondary);
 }
 
