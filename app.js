@@ -308,6 +308,12 @@ async function startRound() {
     await requestWakeLock();
     gameState.roundStats = { correct: 0, skipped: 0, totalWords: 0 };
     gameState.isPaused = false;
+
+    // LOCK SCROLL tijekom igre - sprječava accidental refresh
+    document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.width = '100%';
+    document.body.style.top = '0';
     
     // Početni setup
     gameState.roundScore = 0;
@@ -449,6 +455,12 @@ function endRound() {
     gameState.teams[gameState.currentTeamIndex].score += gameState.roundScore;
     
     updateStickyScoreboard();
+
+    // UNLOCK SCROLL nakon što runda završi
+    document.body.style.overflow = '';
+    document.body.style.position = '';
+    document.body.style.width = '';
+    document.body.style.top = '';
     
     releaseWakeLock();
     playTimeUpSound();
@@ -665,6 +677,11 @@ function deleteCustomList(index) {
 function togglePause() {
     if (gameState.isPaused) {
         gameState.isPaused = false;
+
+        // LOCK scroll opet
+        document.body.style.overflow = 'hidden';
+        document.body.style.position = 'fixed';
+        document.body.style.width = '100%';
         
         gameState.timerInterval = setInterval(() => {
             gameState.timeRemaining--;
@@ -680,6 +697,11 @@ function togglePause() {
     } else {
         gameState.isPaused = true;
         clearInterval(gameState.timerInterval);
+
+        // UNLOCK scroll kada je pauzirano (da možeš scrollati scoreboard ako treba)
+        document.body.style.overflow = '';
+        document.body.style.position = '';
+        document.body.style.width = '';
         
         document.getElementById('pauseBtn').textContent = 'NASTAVI';
         document.getElementById('pauseBtn').classList.add('paused');
