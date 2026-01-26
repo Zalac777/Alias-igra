@@ -63,6 +63,18 @@ function showScreen(screenId) {
         screen.classList.remove('active');
     });
     document.getElementById(screenId).classList.add('active');
+    
+    const homeBtn = document.getElementById('homeBtn');
+    if (homeBtn) {
+        if (screenId === 'startScreen' || 
+            screenId === 'gameScreen' || 
+            screenId === 'endScreen' ||
+            screenId === 'customListsScreen') {
+            homeBtn.classList.add('hidden');
+        } else {
+            homeBtn.classList.remove('hidden');
+        }
+    }
 }
 
 function showStart() {
@@ -850,6 +862,52 @@ function undoLastAction() {
     
     // Opcijski feedback (vibracija)
     hapticFeedback('light');
+}
+
+// ============================================
+// HOME FUNKCIJE - Dodaj NA KRAJ app.js
+// ============================================
+
+// Potvrda prije izlaza iz igre
+function confirmHome() {
+    // Ako je gameScreen aktivan (igra u tijeku), pitaj za potvrdu
+    if (document.getElementById('gameScreen').classList.contains('active')) {
+        if (confirm('Siguran si da želiš izaći?\n\nIgra će biti prekinuta i rezultati neće biti spremljeni.')) {
+            goHome();
+        }
+    } else {
+        // Na ostalim ekranima direktno idi home (bez potvrde)
+        goHome();
+    }
+}
+
+// Vrati se na početni ekran
+function goHome() {
+    // Očisti timer ako postoji
+    if (gameState.timerInterval) {
+        clearInterval(gameState.timerInterval);
+        gameState.timerInterval = null;
+    }
+    
+    // Release wake lock
+    releaseWakeLock();
+    
+    // Reset pause state
+    gameState.isPaused = false;
+    
+    // Unlock scroll (ako je bio locked)
+    document.body.style.overflow = '';
+    document.body.style.position = '';
+    document.body.style.width = '';
+    document.body.style.top = '';
+    
+    // Idi na početni ekran
+    showStart();
+    
+    // Opcijski - resetiraj cijeli gameState
+    // gameState.teams = [];
+    // gameState.currentTeamIndex = 0;
+    // gameState.currentRound = 0;
 }
 
 // KEYBOARD SHORTCUTS

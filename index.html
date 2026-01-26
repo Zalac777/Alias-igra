@@ -17,6 +17,14 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+    <div class="container">
+
+    <!-- Floating Home Button - prikaži na svim ekranima osim početnog -->
+    <button class="home-btn hidden" id="homeBtn" onclick="confirmHome()">🏠</button>
+    
+    </div>
+
     <div class="container">
         <!-- Početni Ekran -->
         <div id="startScreen" class="screen active">
@@ -175,8 +183,12 @@
                 </div>
             </div>
 
-            <button class="btn btn-primary" onclick="nextTeam()">SLJEDEĆI TIM</button>
-        </div>
+             <!-- DODAJ OVU BUTTON GROUP -->
+            <div class="button-group">
+                <button class="btn btn-secondary" onclick="goHome()">🏠 IZBORNIK</button>
+                <button class="btn btn-primary" onclick="nextTeam()">SLJEDEĆI TIM</button>
+            </div>
+        </div>           
 
         <!-- Ekran Kraja Igre -->
         <div id="endScreen" class="screen">
@@ -194,7 +206,8 @@
             </div>
 
             <div class="button-group">
-                <button class="btn btn-primary" onclick="location.reload()">NOVA IGRA</button>
+    		 <button class="btn btn-secondary" onclick="goHome()">🏠 IZBORNIK</button>
+    		 <button class="btn btn-primary" onclick="showSetup()">NOVA IGRA</button>
             </div>
         </div>
 

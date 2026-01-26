@@ -79,9 +79,6 @@ body {
     background: var(--color-bg);
     color: var(--color-text);
     min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     padding: 20px;
     line-height: 1.6;
 }
@@ -93,6 +90,7 @@ body {
     width: 100%;
     max-width: 600px;
     position: relative;
+    margin: 80px auto 0 auto;
 }
 
 /* ===================================
@@ -981,6 +979,81 @@ body {
 }
 
 /* ===================================
+   HOME GUMB - Floating top-left
+   =================================== */
+
+/* Floating home button */
+
+.home-btn {
+    display: none; /* Po defaultu SKRIVEN */
+}
+
+.home-btn:not(.hidden) {
+    display:flex;
+    position: absolute;
+    top: -60pxpx;
+    left: 0;
+    width: 48px;
+    height: 48px;
+    background: var(--color-surface);
+    border: 2px solid var(--color-border);
+    border-radius: 50%;
+    font-size: 22px;
+    cursor: pointer;
+    z-index: 1000;
+    box-shadow: 0 4px 12px var(--color-shadow);
+    transition: var(--transition);
+    align-items: center;
+    justify-content: center;
+}
+
+.home-btn.hidden {
+    display: none !important;
+}
+
+.home-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 16px var(--color-shadow);
+    border-color: var(--color-accent);
+}
+
+.home-btn:active {
+    transform: scale(0.95);
+}
+
+/* Prikaži home gumb na svim ekranima OSIM startScreen */
+.screen.active:not(#startScreen) ~ .home-btn {
+    display: flex;
+}
+
+/* ALTERNATIVA - jednostavniji način (dodaj klasu na body) */
+body.in-game .home-btn {
+    display: flex;
+}
+
+/* Responsive - malo manji na mobitelu */
+@media (max-width: 600px) {
+    .home-btn {
+        width: 44px;
+        height: 44px;
+        font-size: 20px;
+        top: 12px;
+        left: 12px;
+    }
+}
+
+/* Extra mali ekrani */
+@media (max-width: 380px) {
+    .home-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+        top: 10px;
+        left: 10px;
+    }
+}
+
+/* ===================================
    RESPONSIVE - Prilagodba za mobitele (POBOLJŠANA VERZIJA)
    =================================== */
 @media (max-width: 600px) {
@@ -1049,6 +1122,17 @@ body {
     .word-container {
         padding: 40px 20px;
         min-height: 140px;
+    }
+
+    .home-btn {
+        width: 44px;
+        height: 44px;
+        font-size: 20px;
+        top: -56px; /* Malo bliže jer je manji */
+    }
+    
+    .container {
+        margin-top: 70px; /* Manje margine jer je gumb manji */
     }
     
     /* Gumbi jedan ispod drugog na mobitelu */
@@ -1192,6 +1276,18 @@ body {
     .sticky-scoreboard {
         font-size: 11px;
     }
+
+    .home-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+        top: -52px;
+    }
+    
+    .container {
+        margin-top: 65px;
+    }
+
 }
 
 /* NOVI: Landscape mode na mobitelu */
