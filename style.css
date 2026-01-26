@@ -31,6 +31,41 @@
 }
 
 /* ===================================
+   DODAJ OVO NA VRH style.css (NAKON :root)
+   =================================== */
+
+/* Onemogući pull-to-refresh i overscroll bounce */
+html {
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: touch;
+}
+
+body {
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+}
+
+/* Dodatno - onemogući selection teksta (opcijski) */
+* {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Ali dozvoli selection u input poljima */
+input, textarea {
+    -webkit-user-select: text;
+    -khtml-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+
+/* ===================================
    OSNOVNE POSTAVKE - Reset i body
    =================================== */
 * {
@@ -448,7 +483,7 @@ body {
 /* Imena igrača */
 .scoreboard-players {
     flex: 1;
-    min-width: 0;   /* KLJUČNO */
+    min-width: 0;   /* 👈 KLJUČNO */
     color: var(--color-text-secondary);
 }
 
@@ -1018,14 +1053,14 @@ body {
     
     /* Gumbi jedan ispod drugog na mobitelu */
     .game-buttons {
-	    flex-direction: row;   /* u isti red */
+	flex-direction: row;   /* u isti red */
         gap: 12px;
     }
 
     .game-buttons .game-btn {
         flex: 1;   /* min širina gumba */
     }
-
+    
     /* NOVI: Touch target size - iOS preporučuje min 44x44px */
     .game-btn {
         min-height: 64px;
