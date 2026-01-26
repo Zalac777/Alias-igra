@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alias - Igra Objašnjavanja</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Početni Ekran -->
+        <div id="startScreen" class="screen active">
+            <div class="logo-section">
+                <h1 class="game-title">ALIAS</h1>
+                <p class="game-subtitle">Igra Objašnjavanja</p>
+            </div>
+            <button class="btn btn-primary" onclick="showSetup()">NOVA IGRA</button>
+            <button class="btn btn-secondary" onclick="showCustomLists()">VLASTITE LISTE</button>
+        </div>
+
+        <!-- Setup Ekran -->
+        <div id="setupScreen" class="screen">
+            <h2 class="screen-title">Postavljanje Igre</h2>
+            
+            <div class="setup-section">
+                <label class="label">Broj timova</label>
+                <div class="number-selector">
+                    <button class="num-btn" onclick="changeTeams(-1)">−</button>
+                    <span id="numTeams" class="number-display">2</span>
+                    <button class="num-btn" onclick="changeTeams(1)">+</button>
+                </div>
+            </div>
+
+            <div class="setup-section">
+                <label class="label">Igrača po timu</label>
+                <div class="number-selector">
+                    <button class="num-btn" onclick="changePlayers(-1)">−</button>
+                    <span id="numPlayers" class="number-display">2</span>
+                    <button class="num-btn" onclick="changePlayers(1)">+</button>
+                </div>
+            </div>
+
+            <div class="setup-section">
+                <label class="label">Vrijeme (sekunde)</label>
+                <div class="option-selector">
+                    <button class="option-btn active" onclick="selectTime(30)">30</button>
+                    <button class="option-btn" onclick="selectTime(60)">60</button>
+                    <button class="option-btn" onclick="selectTime(90)">90</button>
+                </div>
+            </div>
+
+            <div class="setup-section">
+                <label class="label">Težina riječi</label>
+                <div class="option-selector difficulty-selector">
+                    <button class="option-btn" onclick="selectDifficulty('lako')">Lagano</button>
+                    <button class="option-btn" onclick="selectDifficulty('srednje')">Srednje</button>
+                    <button class="option-btn" onclick="selectDifficulty('tesko')">Teško</button>
+                    <button class="option-btn active" onclick="selectDifficulty('kombinirano')">Kombinirano</button>
+                </div>
+            </div>
+
+            <div class="setup-section">
+                <label class="label">Bodova za pobjedu</label>
+                <div class="option-selector">
+                    <button class="option-btn active" onclick="selectWinScore(10)">10</button>
+                    <button class="option-btn" onclick="selectWinScore(15)">15</button>
+                    <button class="option-btn" onclick="selectWinScore(20)">20</button>
+                </div>
+            </div>
+
+            <div class="setup-section">
+                <label class="label">Odaberi teme</label>
+                <div id="categoryList" class="category-list">
+                    <!-- Kategorije će biti učitane dinamički -->
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button class="btn btn-secondary" onclick="showStart()">NATRAG</button>
+                <button class="btn btn-primary" onclick="showPlayerNames()">DALJE</button>
+            </div>
+        </div>
+
+        <!-- Ekran za Unos Imena -->
+        <div id="playerNamesScreen" class="screen">
+            <h2 class="screen-title">Unesite Imena Igrača</h2>
+            <div id="playerNamesContainer" class="player-names-container">
+                <!-- Polja za imena će biti generirana dinamički -->
+            </div>
+            <div class="button-group">
+                <button class="btn btn-secondary" onclick="showSetup()">NATRAG</button>
+                <button class="btn btn-primary" onclick="startGame()">POČNI IGRU</button>
+            </div>
+        </div>
+
+        <!-- Ekran Prije Runde -->
+        <div id="beforeRoundScreen" class="screen">
+            <div class="round-info">
+                <h2 class="team-announcement" id="currentTeamName"></h2>
+                <p class="round-subtitle">NA REDU STE!</p>
+                <div class="roles-info">
+                    <p id="readerName" class="role-text"></p>
+                    <p id="explainerName" class="role-text"></p>
+                </div>
+            </div>
+            <button class="btn btn-primary btn-large" onclick="startRound()">KRENI</button>
+        </div>
+
+        <!-- Ekran Igre -->
+        <div id="gameScreen" class="screen">
+            <!-- Sticky Scoreboard Header -->
+            <div class="sticky-scoreboard" id="stickyScoreboard">
+                <!-- Dinamički generirano kroz JavaScript -->
+            </div>
+
+            <div class="game-header">
+                <div class="timer-container">
+                    <div class="timer" id="timer">60</div>
+                </div>
+                <div class="score-display">
+                    <span class="score-label">Ovaj krug:</span>
+                    <span class="score-value" id="roundScore">0</span>
+                </div>
+            </div>
+
+            <div class="word-container">
+                <div class="word" id="currentWord">SPREMNO</div>
+            </div>
+
+            <!-- Pauza i Undo gumbi -->
+            <div class="game-controls">
+            	<button class="btn-pause" id="pauseBtn" onclick="togglePause()">PAUZIRAJ</button>
+	   	 <button class="btn-sound" id="soundBtn" onclick="toggleSound()">🔊</button>  <!-- DODAJ -->
+           	 <button class="btn-undo" id="undoBtn" onclick="undoLastAction()">↶ PONIŠTI</button>
+	    </div>
+
+            <!-- Glavni game gumbi -->
+            <div class="game-buttons">
+                <button class="game-btn btn-skip" onclick="skipWord()">
+                    <span class="btn-icon">↷</span>
+                    <span class="btn-label">PRESKOČI</span>
+                    <span class="btn-points">-1</span>
+                </button>
+                <button class="game-btn btn-correct" onclick="correctWord()">
+                    <span class="btn-icon">✓</span>
+                    <span class="btn-label">TOČNO</span>
+                    <span class="btn-points">+1</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Ekran Nakon Runde -->
+        <div id="afterRoundScreen" class="screen">
+            <h2 class="screen-title" id="afterRoundTeam"></h2>
+            <div class="round-result">
+                <p class="result-label">Osvojili ste</p>
+                <p class="result-score" id="roundResultScore">+5</p>
+                <p class="result-label">bodova</p>
+            </div>
+            
+            <div class="scoreboard">
+                <h3 class="scoreboard-title">Trenutno Stanje</h3>
+                <div id="scoreboardContainer" class="scoreboard-list">
+                    <!-- Rezultati će biti prikazani ovdje -->
+                </div>
+            </div>
+
+            <button class="btn btn-primary" onclick="nextTeam()">SLJEDEĆI TIM</button>
+        </div>
+
+        <!-- Ekran Kraja Igre -->
+        <div id="endScreen" class="screen">
+            <div class="winner-section">
+                <h2 class="winner-title">POBJEDNIK!</h2>
+                <h3 class="winner-team" id="winnerTeam"></h3>
+                <p class="winner-score" id="winnerScore"></p>
+            </div>
+            
+            <div class="final-scoreboard">
+                <h3 class="scoreboard-title">Konačni Rezultati</h3>
+                <div id="finalScoreboardContainer" class="scoreboard-list">
+                    <!-- Konačni rezultati -->
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="location.reload()">NOVA IGRA</button>
+            </div>
+        </div>
+
+        <!-- Ekran za Custom Liste -->
+        <div id="customListsScreen" class="screen">
+            <h2 class="screen-title">Vlastite Liste Riječi</h2>
+            
+            <div class="custom-list-form">
+                <div class="form-group">
+                    <label class="label">Naziv teme</label>
+                    <input type="text" id="customListName" class="input-field" placeholder="npr. Filmovi 90-ih">
+                </div>
+                
+                <div class="form-group">
+                    <label class="label">Riječi (svaka u novom redu)</label>
+                    <textarea id="customListWords" class="textarea-field" rows="10" placeholder="titanic&#10;matrix&#10;gladijator&#10;..."></textarea>
+                </div>
+                
+                <button class="btn btn-primary" onclick="saveCustomList()">SPREMI LISTU</button>
+            </div>
+
+            <div class="saved-lists" id="savedListsContainer">
+                <h3 class="section-subtitle">Spremljene Liste</h3>
+                <div id="savedListsList" class="saved-lists-list">
+                    <!-- Spremljene liste će biti ovdje -->
+                </div>
+            </div>
+
+            <button class="btn btn-secondary" onclick="showStart()">NATRAG</button>
+        </div>
+    </div>
+
+    <!-- Učitaj sve teme -->
+    <script src="rijeci/sport.js"></script>
+    <script src="rijeci/filmovi.js"></script>
+    <script src="rijeci/glazba.js"></script>
+    <script src="rijeci/hrana.js"></script>
+    <script src="rijeci/geografija.js"></script>
+    <script src="rijeci/biblija.js"></script>
+    <script src="rijeci/seksualnost.js"></script>
+    
+    <script src="rijeci.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

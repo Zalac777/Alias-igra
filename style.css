@@ -1,0 +1,1189 @@
+/* ===================================
+   CSS VARIJABLE - Globalne boje i fontovi
+   =================================== */
+:root {
+    /* Boje pozadine i površina */
+    --color-bg: #fff6e6;
+    --color-surface: #FFFFFF;
+    
+    /* Boje teksta */
+    --color-text: #0A0A0A;
+    --color-text-secondary: #6B6B6B;
+    
+    /* Glavna boja (koristi se za naglašavanje) */
+    --color-accent: #0b8be0;
+    --color-accent-dark: #28a9ff;
+    
+    /* Boje za gumbe u igri */
+    --color-correct: #34C759;  /* Zelena za "Točno" */
+    --color-skip: #FF9500;     /* Narančasta za "Preskoči" */
+    
+    /* Ivice i sjene */
+    --color-border: #E5E5E5;
+    --color-shadow: rgba(0, 0, 0, 0.08);
+    
+    /* Fontovi */
+    --font-display: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    
+    /* Animacija prijelaza */
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ===================================
+   OSNOVNE POSTAVKE - Reset i body
+   =================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-body);
+    background: var(--color-bg);
+    color: var(--color-text);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    line-height: 1.6;
+}
+
+/* ===================================
+   GLAVNI KONTEJNER - Centrira sve ekrane
+   =================================== */
+.container {
+    width: 100%;
+    max-width: 600px;
+    position: relative;
+}
+
+/* ===================================
+   EKRANI - Prikaz/skrivanje i animacija fade-in
+   =================================== */
+.screen {
+    display: none;
+    animation: fadeIn 0.4s ease;
+}
+
+.screen.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===================================
+   POČETNI EKRAN - Logo sekcija
+   =================================== */
+.logo-section {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+/* Glavni naslov "ALIAS" */
+.game-title {
+    font-family: var(--font-display);
+    font-size: clamp(48px, 12vw, 64px);
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+    color: var(--color-text);
+}
+
+/* Podnaslov "Igra Objašnjavanja" */
+.game-subtitle {
+    font-family: var(--font-body);
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+/* ===================================
+   GUMBI - Osnovni stilovi za sve gumbe
+   =================================== */
+.btn {
+    width: 100%;
+    padding: 14px 24px;
+    border: none;
+    border-radius: 8px;
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: var(--transition);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+/* Primarni gumb (glavni akcijski gumbi) */
+.btn-primary {
+    background: var(--color-accent);
+    color: white;
+    box-shadow: 0 4px 16px var(--color-shadow);
+}
+
+.btn-primary:hover {
+    background: var(--color-accent-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px var(--color-shadow);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+/* Sekundarni gumb (manje važni gumbi kao "Natrag") */
+.btn-secondary {
+    background: var(--color-surface);
+    color: var(--color-text);
+    border: 2px solid var(--color-border);
+}
+
+.btn-secondary:hover {
+    border-color: var(--color-text);
+    transform: translateY(-2px);
+}
+
+/* Veliki gumb (npr. "KRENI" prije runde) */
+.btn-large {
+    padding: 28px 48px;
+    font-size: 24px;
+}
+
+/* ===================================
+   SETUP EKRAN - Postavke igre
+   =================================== */
+
+/* Naslov ekrana (npr. "Postavljanje Igre") */
+.screen-title {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 300;
+    margin-bottom: 32px;
+    text-align: center;
+}
+
+/* Sekcija za pojedinu opciju (broj timova, vrijeme, itd.) */
+.setup-section {
+    background: var(--color-surface);
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    border: 1px solid var(--color-border);
+}
+
+/* Labela iznad opcije (npr. "Broj timova") */
+.label {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 12px;
+    color: var(--color-text-secondary);
+}
+
+/* Selektor za brojeve (+ i - gumbi) */
+.number-selector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+}
+
+/* Gumbi + i - za povećavanje/smanjivanje broja */
+.num-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid var(--color-border);
+    background: var(--color-surface);
+    font-size: 24px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.num-btn:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    transform: scale(1.1);
+}
+
+/* Prikaz trenutnog broja (između + i -) */
+.number-display {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 300;
+    min-width: 50px;
+    text-align: center;
+}
+
+/* Selektor za opcije (vrijeme, bodovi) */
+.option-selector {
+    display: flex;
+    gap: 12px;
+}
+
+/* Selektor težine (4 gumba u 2x2 gridu) */
+.difficulty-selector {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+/* Pojedini gumb za opciju (30/60/90, 10/15/20) */
+.option-btn {
+    flex: 1;
+    padding: 16px;
+    border: 2px solid var(--color-border);
+    background: var(--color-surface);
+    border-radius: 12px;
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.option-btn:hover {
+    border-color: var(--color-text);
+}
+
+/* Aktivna opcija (odabrana) */
+.option-btn.active {
+    background: var(--color-accent);
+    color: white;
+    border-color: var(--color-accent);
+}
+
+/* Lista kategorija (Sport, Filmovi, itd.) */
+.category-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* Pojedina kategorija */
+.category-item {
+    flex: 0 0 calc(50% - 4px);
+    padding: 16px;
+    border: 2px solid var(--color-border);
+    background: var(--color-surface);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 500;
+    text-align: center;
+}
+
+.category-item:hover {
+    border-color: var(--color-text);
+}
+
+/* Odabrana kategorija */
+.category-item.selected {
+    background: var(--color-accent);
+    color: white;
+    border-color: var(--color-accent);
+}
+
+/* Grupa gumba (Natrag i Dalje) */
+.button-group {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.button-group .btn {
+    margin-bottom: 0;
+}
+
+/* ===================================
+   EKRAN ZA UNOS IMENA IGRAČA
+   =================================== */
+.player-names-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Sekcija za jedan tim */
+.team-section {
+    background: var(--color-surface);
+    padding: 24px;
+    border-radius: 16px;
+    border: 2px solid var(--color-border);
+}
+
+/* Naslov tima (TIM 1, TIM 2) */
+.team-title {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--color-accent);
+}
+
+/* Input polje za ime igrača */
+.player-input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid var(--color-border);
+    border-radius: 12px;
+    font-family: var(--font-body);
+    font-size: 16px;
+    margin-bottom: 12px;
+    transition: var(--transition);
+}
+
+.player-input:focus {
+    outline: none;
+    border-color: var(--color-accent);
+}
+
+/* ===================================
+   EKRAN PRIJE RUNDE - "TIM X NA REDU STE!"
+   =================================== */
+.round-info {
+    text-align: center;
+    padding: 40px 0;
+}
+
+/* Naziv tima koji je na redu */
+.team-announcement {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 300;
+    margin-bottom: 12px;
+    color: var(--color-accent);
+}
+
+/* Podnaslov "NA REDU STE!" */
+.round-subtitle {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 40px;
+}
+
+/* Kontejner za informacije o ulogama (tko čita, tko objašnjava) */
+.roles-info {
+    background: var(--color-surface);
+    padding: 32px;
+    border-radius: 16px;
+    border: 2px solid var(--color-border);
+    margin-bottom: 40px;
+}
+
+/* Tekst uloga ("Marko čita", "Ana objašnjava") */
+.role-text {
+    font-size: 18px;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.role-text:last-child {
+    margin-bottom: 0;
+}
+
+/* ===================================
+   EKRAN IGRE - Glavni ekran s riječima
+   =================================== */
+
+/* Sticky scoreboard na vrhu game ekrana */
+.sticky-scoreboard {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+}
+
+/* Jedan redak u scoreboardu (tim + imena + bodovi) */
+.scoreboard-row {
+    display: flex;
+    align-items: center;
+    padding: 8px 0;
+    font-size: 14px;
+}
+
+.scoreboard-row:not(:last-child) {
+    border-bottom: 1px solid var(--color-border);
+}
+
+/* Naziv tima (TIM 1, TIM 2) */
+.scoreboard-team-label {
+    font-weight: 600;
+    min-width: 60px;
+}
+
+/* Separator : */
+.scoreboard-separator {
+    margin: 0 8px;
+    color: var(--color-text-secondary);
+}
+
+/* Imena igrača */
+.scoreboard-players {
+    flex: 1;
+    color: var(--color-text-secondary);
+}
+
+/* Bodovi */
+.scoreboard-points {
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--color-accent);
+    min-width: 30px;
+    text-align: right;
+}
+
+/* Header s tajmerom i rezultatom */
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 60px;
+}
+
+.timer-container {
+    flex: 1;
+}
+
+/* Tajmer (odbrojavanje) */
+.timer {
+    font-family: var(--font-display);
+    font-size: 36px;
+    font-weight: 300;
+    color: var(--color-accent);
+    line-height: 1;
+}
+
+/* Animacija upozorenja kada je malo vremena preostalo */
+.timer.warning {
+    animation: pulse 0.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Prikaz trenutnog rezultata u ovom krugu */
+.score-display {
+    text-align: right;
+}
+
+.score-label {
+    display: block;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-secondary);
+    margin-bottom: 4px;
+}
+
+.score-value {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 300;
+}
+
+/* Kontejner za prikaz riječi */
+.word-container {
+    background: var(--color-surface);
+    padding: 60px 32px;
+    border-radius: 8px;
+    border: 1px solid var(--color-border);
+    margin-bottom: 32px;
+    min-height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Sama riječ koja se objašnjava */
+.word {
+    font-family: var(--font-display);
+    font-size: clamp(24px, 6vw, 36px);
+    font-weight: 300;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    line-height: 1.3;
+}
+
+/* Kontejner za gumbe "Točno" i "Preskoči" */
+.game-buttons {
+    display: flex;
+    gap: 16px;
+}
+
+/* Pojedini gumb u igri (Točno ili Preskoči) */
+.game-btn {
+    flex: 1;
+    padding: 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-display);
+}
+
+/* Gumb "Preskoči" (narančasti) */
+.btn-skip {
+    background: var(--color-skip);
+    color: white;
+}
+
+.btn-skip:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(255, 149, 0, 0.3);
+}
+
+/* Gumb "Točno" (zeleni) */
+.btn-correct {
+    background: var(--color-correct);
+    color: white;
+}
+
+.btn-correct:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(52, 199, 89, 0.3);
+}
+
+/* Ikona na gumbu (✓ i ↷) */
+.btn-icon {
+    font-size: 24px;
+    font-weight: 400;
+}
+
+/* Tekst na gumbu ("TOČNO" i "PRESKOČI") */
+.btn-label {
+    font-size: 15px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Bodovi na gumbu (+1 i -1) */
+.btn-points {
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+/* ===================================
+   EKRAN NAKON RUNDE - Prikaz rezultata
+   =================================== */
+
+/* Kontejner za rezultat runde */
+.round-result {
+    text-align: center;
+    background: var(--color-surface);
+    padding: 60px 40px;
+    border-radius: 24px;
+    border: 2px solid var(--color-border);
+    margin-bottom: 32px;
+}
+
+/* Labela "Osvojili ste" */
+.result-label {
+    font-size: 16px;
+    color: var(--color-text-secondary);
+    margin-bottom: 8px;
+}
+
+/* Rezultat (+5, -2, itd.) */
+.result-score {
+    font-family: var(--font-display);
+    font-size: 48px;
+    font-weight: 300;
+    color: var(--color-accent);
+    margin: 12px 0;
+}
+
+/* Kontejner za tablicu rezultata */
+.scoreboard {
+    margin-bottom: 32px;
+}
+
+/* Naslov tablice "Trenutno Stanje" */
+.scoreboard-title {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-secondary);
+}
+
+/* Lista timova i njihovih rezultata */
+.scoreboard-list {
+    background: var(--color-surface);
+    border-radius: 16px;
+    border: 2px solid var(--color-border);
+    overflow: hidden;
+}
+
+/* Jedan redak u tablici (tim + rezultat) */
+.scoreboard-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 2px solid var(--color-border);
+}
+
+.scoreboard-item:last-child {
+    border-bottom: none;
+}
+
+/* Prvi tim (vodeći) */
+.scoreboard-item.leader {
+    background: var(--color-accent);
+    color: white;
+}
+
+/* Ime tima */
+.team-name {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+}
+
+/* Rezultat tima */
+.team-score {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 800;
+}
+
+/* ===================================
+   EKRAN KRAJA IGRE - Pobjednik
+   =================================== */
+.winner-section {
+    text-align: center;
+    padding: 60px 0;
+}
+
+/* Naslov "POBJEDNIK!" */
+.winner-title {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-secondary);
+    margin-bottom: 16px;
+}
+
+/* Ime pobjedničkog tima */
+.winner-team {
+    font-family: var(--font-display);
+    font-size: 36px;
+    font-weight: 300;
+    color: var(--color-accent);
+    margin-bottom: 12px;
+}
+
+/* Konačni rezultat pobjednika */
+.winner-score {
+    font-size: 20px;
+    color: var(--color-text-secondary);
+}
+
+/* Konačna tablica rezultata */
+.final-scoreboard {
+    margin-bottom: 40px;
+}
+
+/* ===================================
+   EKRAN ZA CUSTOM LISTE
+   =================================== */
+
+/* Forma za kreiranje nove liste */
+.custom-list-form {
+    background: var(--color-surface);
+    padding: 32px;
+    border-radius: 16px;
+    border: 2px solid var(--color-border);
+    margin-bottom: 32px;
+}
+
+/* Grupa polja u formi */
+.form-group {
+    margin-bottom: 24px;
+}
+
+.form-group:last-child {
+    margin-bottom: 0;
+}
+
+/* Input polje (naziv teme) */
+.input-field {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid var(--color-border);
+    border-radius: 12px;
+    font-family: var(--font-body);
+    font-size: 16px;
+    transition: var(--transition);
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: var(--color-accent);
+}
+
+/* Textarea polje (riječi) */
+.textarea-field {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid var(--color-border);
+    border-radius: 12px;
+    font-family: var(--font-body);
+    font-size: 16px;
+    resize: vertical;
+    transition: var(--transition);
+}
+
+.textarea-field:focus {
+    outline: none;
+    border-color: var(--color-accent);
+}
+
+/* Kontejner za spremljene liste */
+.saved-lists {
+    margin-bottom: 32px;
+}
+
+/* Podnaslov "Spremljene Liste" */
+.section-subtitle {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-secondary);
+}
+
+/* Lista svih spremljenih custom listi */
+.saved-lists-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Jedna spremljena lista */
+.saved-list-item {
+    background: var(--color-surface);
+    padding: 20px;
+    border-radius: 12px;
+    border: 2px solid var(--color-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Naziv custom liste */
+.list-name {
+    font-weight: 600;
+    font-size: 16px;
+}
+
+/* Broj riječi u listi */
+.list-count {
+    color: var(--color-text-secondary);
+    font-size: 14px;
+    margin-top: 4px;
+}
+
+/* Akcijski gumbi (Uredi, Obriši) */
+.list-actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* Pojedini akcijski gumb */
+.action-btn {
+    padding: 8px 16px;
+    border: 2px solid var(--color-border);
+    background: var(--color-surface);
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.action-btn:hover {
+    border-color: var(--color-text);
+}
+
+/* Gumb za brisanje (crveni) */
+.action-btn.delete {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+}
+
+.action-btn.delete:hover {
+    background: var(--color-accent);
+    color: white;
+}
+
+/* Prazno stanje (kad nema spremljenih listi) */
+.empty-state {
+    text-align: center;
+    padding: 40px;
+    color: var(--color-text-secondary);
+}
+
+/* ===================================
+   GAME KONTROLE - PAUZA, ZVUK, UNDO
+   =================================== */
+
+/* Kontejner za kontrole - flex layout */
+.game-controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+    width: 100%; /* Puna širina */
+}
+
+/* Zajednički stil za sve kontrolne gumbe */
+.btn-pause,
+.btn-sound,
+.btn-undo {
+    padding: 12px;
+    background: var(--color-surface);
+    border: 2px solid var(--color-border);
+    border-radius: 8px;
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Pauza i Undo su iste veličine - dijele prostor jednako */
+.btn-pause,
+.btn-undo {
+    flex: 1; /* Isto širine, dijele prostor */
+}
+
+/* Sound gumb je manji - fiksirani width */
+.btn-sound {
+    flex: 0 0 60px; /* Fiksirano 60px */
+    font-size: 22px; /* Veći za emoji */
+    text-transform: none; /* Emoji ne treba uppercase */
+    letter-spacing: 0;
+    padding: 8px;
+}
+
+/* Hover efekti */
+.btn-pause:hover,
+.btn-sound:hover,
+.btn-undo:hover {
+    border-color: var(--color-text);
+    transform: translateY(-2px);
+}
+
+/* Pauzirano stanje */
+.btn-pause.paused {
+    background: var(--color-accent);
+    color: white;
+    border-color: var(--color-accent);
+}
+
+/* Muted stanje */
+.btn-sound.muted {
+    background: #f0f0f0;
+    opacity: 0.6;
+}
+
+/* Undo specifični stil */
+.btn-undo {
+    background: var(--color-surface);
+    color: var(--color-text-secondary);
+    font-size: 13px;
+}
+
+.btn-undo:hover {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+}
+
+/* ===================================
+   RESPONSIVE - Prilagodba za mobitele (POBOLJŠANA VERZIJA)
+   =================================== */
+@media (max-width: 600px) {
+    /* Osnovni padding za container */
+    body {
+        padding: 12px;
+    }
+    
+    /* Font size redukcije */
+    .game-title {
+        font-size: 42px;
+    }
+    
+    .timer {
+        font-size: 28px;
+    }
+    
+    .word {
+        font-size: 22px;
+        line-height: 1.4;
+    }
+    
+    .team-announcement {
+        font-size: 26px;
+    }
+    
+    .result-score {
+        font-size: 36px;
+    }
+    
+    .winner-team {
+        font-size: 28px;
+    }
+    
+    /* NOVI: Sticky scoreboard optimizacija */
+    .sticky-scoreboard {
+        max-height: 25vh; /* Ne uzima previše ekrana */
+        overflow-y: auto;
+        font-size: 13px;
+        padding: 8px 12px;
+        -webkit-overflow-scrolling: touch; /* Smooth scroll na iOS */
+    }
+    
+    .scoreboard-row {
+        padding: 6px 0;
+        font-size: 12px;
+    }
+    
+    .scoreboard-team-label {
+        min-width: 50px;
+        font-size: 12px;
+    }
+    
+    /* Na malim ekranima sakrij imena igrača */
+    .scoreboard-players {
+        display: none;
+    }
+    
+    .scoreboard-points {
+        font-size: 14px;
+    }
+    
+    /* NOVI: Word container optimizacija */
+    .word-container {
+        padding: 40px 20px;
+        min-height: 140px;
+    }
+    
+    /* Gumbi jedan ispod drugog na mobitelu */
+    .game-buttons {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    /* NOVI: Touch target size - iOS preporučuje min 44x44px */
+    .game-btn {
+        min-height: 64px;
+        padding: 20px;
+    }
+    
+    .btn {
+        min-height: 48px;
+        padding: 16px 20px;
+        font-size: 15px;
+    }
+    
+    .num-btn {
+        width: 54px;
+        height: 54px;
+        font-size: 22px;
+    }
+    
+    /* Kategorije pune širine na mobitelu */
+    .category-item {
+        flex: 0 0 100%;
+        padding: 18px;
+        font-size: 16px;
+    }
+    
+    /* NOVI: Option buttons optimizacija */
+    .option-btn {
+        padding: 14px 12px;
+        font-size: 15px;
+    }
+    
+    /* NOVI: Difficulty selector ostaje 2x2 ali sa manje paddinga */
+    .difficulty-selector .option-btn {
+        padding: 12px 8px;
+        font-size: 14px;
+    }
+    
+    /* NOVI: Setup sections kompaktniji */
+    .setup-section {
+        padding: 14px;
+        margin-bottom: 10px;
+    }
+    
+    /* NOVI: Player input fields lakši za tipkanje */
+    .player-input {
+        padding: 16px;
+        font-size: 16px; /* Sprječava zoom na iOS */
+        margin-bottom: 10px;
+    }
+    
+    /* NOVI: Custom lista textarea manji */
+    .textarea-field {
+        font-size: 16px; /* Sprječava zoom na iOS */
+    }
+    
+    /* NOVI: Saved list items stack friendly */
+    .saved-list-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 16px;
+    }
+    
+    .list-actions {
+        width: 100%;
+    }
+    
+    .action-btn {
+        flex: 1;
+    }
+    
+    /* NOVI: Round info kompaktniji */
+    .round-info {
+        padding: 30px 0;
+    }
+    
+    .roles-info {
+        padding: 24px 20px;
+    }
+    
+    .role-text {
+        font-size: 16px;
+    }
+    
+    /* NOVI: Score display u game headeru */
+    .game-header {
+        flex-direction: column;
+        gap: 16px;
+        margin-bottom: 40px;
+    }
+    
+    .timer-container {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .score-display {
+        text-align: center;
+    }
+    
+    /* Game kontrole na mobitelu */
+    .btn-sound {
+        flex: 0 0 50px;
+        font-size: 20px;
+        padding: 6px;
+    }
+}
+
+/* NOVI: Extra mali ekrani (iPhone SE, Android fold phones) */
+@media (max-width: 380px) {
+    .game-title {
+        font-size: 36px;
+    }
+    
+    .word {
+        font-size: 20px;
+    }
+    
+    .option-btn {
+        padding: 12px 8px;
+        font-size: 14px;
+    }
+    
+    .difficulty-selector .option-btn {
+        padding: 10px 6px;
+        font-size: 13px;
+    }
+    
+    .sticky-scoreboard {
+        font-size: 11px;
+    }
+}
+
+/* NOVI: Landscape mode na mobitelu */
+@media (max-width: 900px) and (orientation: landscape) {
+    body {
+        padding: 8px;
+    }
+    
+    .container {
+        max-width: 100%;
+        padding: 0 20px;
+    }
+    
+    .sticky-scoreboard {
+        max-height: 20vh;
+    }
+    
+    .word-container {
+        padding: 30px 20px;
+        min-height: 100px;
+    }
+    
+    .game-buttons {
+        flex-direction: row;
+    }
+    
+    .round-info {
+        padding: 20px 0;
+    }
+}
+
+/* NOVI: Prevent zoom on iOS input focus */
+@supports (-webkit-touch-callout: none) {
+    input, textarea, select {
+        font-size: 16px !important;
+    }
+}
