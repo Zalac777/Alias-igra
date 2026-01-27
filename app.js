@@ -521,20 +521,44 @@ function updateScoreboard(containerId) {
 }
 
 function nextTeam() {
-    const winner = gameState.teams.find(team => team.score >= gameState.winScore);
-    
-    if (winner) {
-        showEndScreen(winner);
-        return;
-    }
-    
+    // Pomakni na sljedeći tim
     gameState.currentTeamIndex = (gameState.currentTeamIndex + 1) % gameState.numTeams;
     
+    // Ako smo se vratili na prvi tim, runda je gotova
     if (gameState.currentTeamIndex === 0) {
         gameState.currentRound++;
+        
+        // PROVJERI POBJEDNIKA SAMO NA KRAJU RUNDE (kad svi odigraju)
+        const winner = checkWinner();
+        
+        if (winner) {
+            showEndScreen(winner);
+            return;
+        }
     }
     
     showBeforeRound();
+}
+
+// NOVA FUNKCIJA - Provjera pobjednika
+function checkWinner() {
+    // Pronađi tim(ove) s najviše bodova
+    const maxScore = Math.max(...gameState.teams.map(t => t.score));
+    
+    // Ako nitko nije dostigao winning score, nema pobjednika
+    if (maxScore < gameState.winScore) {
+        return null;
+    }
+    
+    // Ako netko je dostigao/prešao winning score, pobjeđuje tim s najviše bodova
+    const winners = gameState.teams.filter(t => t.score === maxScore);
+    
+    // Ako ima više timova s istim bodovima (izjednačeno), igra se dalje
+    if (winners.length > 1) {
+        return null; // Sudden death - igraj dalje
+    }
+    
+    return winners[0]; // Pobjednik!
 }
 
 // === KRAJ IGRE ===
