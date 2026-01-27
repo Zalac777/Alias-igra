@@ -3,24 +3,24 @@
    =================================== */
 :root {
     /* Boje pozadine i površina */
-    --color-bg: #fff6e6;
-    --color-surface: #FFFFFF;
+    --color-bg: #ffffff;
+    --color-surface: #fafafa;
     
     /* Boje teksta */
-    --color-text: #0A0A0A;
-    --color-text-secondary: #6B6B6B;
+    --color-text: #0a0a0a;
+    --color-text-secondary: #6b6b6b;
     
-    /* Glavna boja (koristi se za naglašavanje) */
-    --color-accent: #0b8be0;
-    --color-accent-dark: #28a9ff;
+    /* Glavna boja - Purple accent */
+    --color-accent: #8b5cf6;
+    --color-accent-hover: #7c3aed;
+    --color-shadow: rgba(139, 92, 246, 0.15);
     
     /* Boje za gumbe u igri */
-    --color-correct: #34C759;  /* Zelena za "Točno" */
-    --color-skip: #B92D2D;     /* Narančasta za "Preskoči" */
+    --color-correct: #34C759;
+    --color-skip: #ff453a;
     
-    /* Ivice i sjene */
-    --color-border: #E5E5E5;
-    --color-shadow: rgba(0, 0, 0, 0.08);
+    /* Ivice */
+    --color-border: #e0e0e0;
     
     /* Fontovi */
     --font-display: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -30,8 +30,20 @@
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* ===== DARK MODE VARIJABLE ===== */
+[data-theme="dark"] {
+    --color-bg: #0a0a0a;
+    --color-surface: #161616;
+    --color-text: #e5e5e5;
+    --color-text-secondary: #9ca3af;
+    --color-accent: #a78bfa;
+    --color-accent-hover: #c4b5fd;
+    --color-shadow: rgba(167, 139, 250, 0.25);
+    --color-border: #2a2a2a;
+}
+
 /* ===================================
-   DODAJ OVO NA VRH style.css (NAKON :root)
+   MOBILE OPTIMIZATIONS
    =================================== */
 
 /* Onemogući pull-to-refresh i overscroll bounce */
@@ -46,7 +58,7 @@ body {
     touch-action: pan-y;
 }
 
-/* Dodatno - onemogući selection teksta (opcijski) */
+/* Onemogući selection teksta (osim u input poljima) */
 * {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -56,7 +68,7 @@ body {
     user-select: none;
 }
 
-/* Ali dozvoli selection u input poljima */
+/* Dozvoli selection u input poljima */
 input, textarea {
     -webkit-user-select: text;
     -khtml-user-select: text;
@@ -66,7 +78,7 @@ input, textarea {
 }
 
 /* ===================================
-   OSNOVNE POSTAVKE - Reset i body
+   OSNOVNE POSTAVKE
    =================================== */
 * {
     margin: 0;
@@ -84,7 +96,7 @@ body {
 }
 
 /* ===================================
-   GLAVNI KONTEJNER - Centrira sve ekrane
+   GLAVNI KONTEJNER
    =================================== */
 .container {
     width: 100%;
@@ -94,7 +106,7 @@ body {
 }
 
 /* ===================================
-   EKRANI - Prikaz/skrivanje i animacija fade-in
+   EKRANI
    =================================== */
 .screen {
     display: none;
@@ -124,114 +136,220 @@ body {
     margin-bottom: 60px;
 }
 
-/* Glavni naslov "ALIAS" */
 .game-title {
     font-family: var(--font-display);
     font-size: clamp(48px, 12vw, 64px);
-    font-weight: 300;
-    letter-spacing: 0.05em;
+    font-weight: 200;
+    letter-spacing: 0.1em;
     margin-bottom: 8px;
     color: var(--color-text);
+    position: relative;
+    display: inline-block; /* KLJUČNO - mora biti inline-block! */
 }
 
-/* Podnaslov "Igra Objašnjavanja" */
+/* Pseudo-element za sweep efekat */
+.game-title::before {
+    content: 'ALIAS';
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: linear-gradient(
+        135deg,
+        transparent 0%,
+        transparent 30%,
+        rgba(152, 39, 245, 0.9) 50%,
+        transparent 70%,
+        transparent 100%
+    );
+    background-size: 200% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: aliasSweep 8s linear infinite;
+}
+
+/* Dark mode - plavi/zlatni sweep */
+[data-theme="dark"] .game-title::before {
+    background: linear-gradient(
+        135deg,
+        transparent 0%,
+        transparent 30%,
+        rgba(152, 39, 245, 0.6) 50%,
+        transparent 70%,
+        transparent 100%
+    );
+    background-size: 200% 100%;
+    background-clip: text; /* KLJUČNO - mora clippati na tekst! */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+@keyframes aliasSweep {
+    0%   { background-position: 100% 0; opacity: 0; }
+    5%   { background-position: 100% 0; opacity: 1; }  /* Fade in */
+    35%  { background-position: 0% 0; opacity: 1; }    /* Sweep traje 30% = 2.4s */
+    40%  { background-position: 0% 0; opacity: 0; }    /* Fade out */
+    100% { background-position: 0% 0; opacity: 0; }    /* Pauza */
+}
+
 .game-subtitle {
     font-family: var(--font-body);
-    font-size: 12px;
+    font-size: 11px;
     color: var(--color-text-secondary);
-    font-weight: 400;
-    letter-spacing: 0.1em;
+    font-weight: 300;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
 }
 
 /* ===================================
-   GUMBI - Osnovni stilovi za sve gumbe
+   1. MENU BUTTONS - V1 Subtle Glow
    =================================== */
 .btn {
     width: 100%;
-    padding: 14px 24px;
-    border: none;
+    padding: 16px 28px;
+    background: transparent;
+    border: 0.5px solid var(--color-border);
     border-radius: 8px;
-    font-family: var(--font-display);
-    font-size: 14px;
-    font-weight: 400;
-    letter-spacing: 0.05em;
+    font-size: 13px;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text);
     cursor: pointer;
     transition: var(--transition);
     margin-bottom: 10px;
-    text-transform: uppercase;
 }
 
-/* Primarni gumb (glavni akcijski gumbi) */
 .btn-primary {
-    background: var(--color-accent);
-    color: white;
-    box-shadow: 0 4px 16px var(--color-shadow);
+    background: transparent;
+    color: var(--color-text);
+    border: 0.5px solid var(--color-border);
 }
 
 .btn-primary:hover {
-    background: var(--color-accent-dark);
+    border-color: var(--color-accent);
+    box-shadow: 0 0 20px var(--color-shadow);
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px var(--color-shadow);
 }
 
 .btn-primary:active {
-    transform: translateY(0);
+    background: rgba(139, 92, 246, 0.05);
 }
 
-/* Sekundarni gumb (manje važni gumbi kao "Natrag") */
+[data-theme="dark"] .btn-primary:active {
+    background: rgba(167, 139, 250, 0.08);
+}
+
 .btn-secondary {
-    background: var(--color-surface);
+    background: transparent;
     color: var(--color-text);
-    border: 2px solid var(--color-border);
+    border: 0.5px solid var(--color-border);
 }
 
 .btn-secondary:hover {
-    border-color: var(--color-text);
+    border-color: var(--color-accent);
+    box-shadow: 0 0 20px var(--color-shadow);
     transform: translateY(-2px);
 }
 
-/* Veliki gumb (npr. "KRENI" prije runde) */
+.btn-secondary:active {
+    background: rgba(139, 92, 246, 0.05);
+}
+
+[data-theme="dark"] .btn-secondary:active {
+    background: rgba(167, 139, 250, 0.08);
+}
+
 .btn-large {
     padding: 28px 48px;
-    font-size: 24px;
+    font-size: 18px;
 }
 
 /* ===================================
-   SETUP EKRAN - Postavke igre
+   2. ICON BUTTONS - V3 Morph Square
    =================================== */
+.home-btn,
+.theme-btn {
+    display: none;
+}
 
-/* Naslov ekrana (npr. "Postavljanje Igre") */
+.home-btn:not(.hidden),
+.theme-btn:not(.hidden) {
+    display: flex;
+    position: absolute;
+    top: -60px;
+    width: 48px;
+    height: 48px;
+    background: transparent;
+    border: 0.5px solid var(--color-border);
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 1000;
+    transition: all 0.4s ease;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text);
+}
+
+.home-btn:not(.hidden) {
+    left: 0;
+}
+
+.theme-btn:not(.hidden) {
+    right: 0;
+}
+
+.home-btn.hidden,
+.theme-btn.hidden {
+    display: none !important;
+}
+
+.home-btn:hover,
+.theme-btn:hover {
+    border-radius: 8px;
+    border-color: var(--color-accent);
+    box-shadow: 0 4px 20px var(--color-shadow);
+    transform: scale(1.1);
+}
+
+[data-theme="dark"] .home-btn:hover,
+[data-theme="dark"] .theme-btn:hover {
+    box-shadow: 0 4px 25px var(--color-shadow);
+}
+
+/* ===================================
+   SETUP EKRAN
+   =================================== */
 .screen-title {
     font-family: var(--font-display);
     font-size: 24px;
-    font-weight: 300;
+    font-weight: 200;
     margin-bottom: 32px;
     text-align: center;
+    letter-spacing: 0.05em;
 }
 
-/* Sekcija za pojedinu opciju (broj timova, vrijeme, itd.) */
 .setup-section {
     background: var(--color-surface);
     padding: 16px;
     border-radius: 8px;
     margin-bottom: 12px;
-    border: 1px solid var(--color-border);
+    border: 0.5px solid var(--color-border);
 }
 
-/* Labela iznad opcije (npr. "Broj timova") */
 .label {
     display: block;
     font-family: var(--font-display);
     font-size: 11px;
-    font-weight: 500;
+    font-weight: 400;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     margin-bottom: 12px;
     color: var(--color-text-secondary);
 }
 
-/* Selektor za brojeve (+ i - gumbi) */
+/* Number selector */
 .number-selector {
     display: flex;
     align-items: center;
@@ -239,15 +357,15 @@ body {
     gap: 24px;
 }
 
-/* Gumbi + i - za povećavanje/smanjivanje broja */
 .num-btn {
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    border: 2px solid var(--color-border);
-    background: var(--color-surface);
+    border: 0.5px solid var(--color-border);
+    background: transparent;
+    color: var(--color-text);
     font-size: 24px;
-    font-weight: 600;
+    font-weight: 300;
     cursor: pointer;
     transition: var(--transition);
     display: flex;
@@ -257,89 +375,113 @@ body {
 
 .num-btn:hover {
     border-color: var(--color-accent);
-    color: var(--color-accent);
     transform: scale(1.1);
+    box-shadow: 0 0 15px var(--color-shadow);
 }
 
-/* Prikaz trenutnog broja (između + i -) */
 .number-display {
     font-family: var(--font-display);
     font-size: 24px;
-    font-weight: 300;
+    font-weight: 200;
     min-width: 50px;
     text-align: center;
 }
 
-/* Selektor za opcije (vrijeme, bodovi) */
+/* Option selector */
 .option-selector {
     display: flex;
     gap: 12px;
 }
 
-/* Selektor težine (4 gumba u 2x2 gridu) */
 .difficulty-selector {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 12px;
 }
 
-/* Pojedini gumb za opciju (30/60/90, 10/15/20) */
 .option-btn {
     flex: 1;
     padding: 16px;
-    border: 2px solid var(--color-border);
-    background: var(--color-surface);
+    border: 0.5px solid var(--color-border);
+    background: transparent;
     border-radius: 12px;
     font-family: var(--font-display);
-    font-size: 18px;
-    font-weight: 600;
+    font-size: 16px;
+    font-weight: 300;
     cursor: pointer;
     transition: var(--transition);
+    color: var(--color-text);
 }
 
 .option-btn:hover {
-    border-color: var(--color-text);
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px var(--color-shadow);
 }
 
-/* Aktivna opcija (odabrana) */
 .option-btn.active {
     background: var(--color-accent);
     color: white;
     border-color: var(--color-accent);
 }
 
-/* Lista kategorija (Sport, Filmovi, itd.) */
+[data-theme="dark"] .option-btn {
+    color: #f5f5f5;
+}
+
+[data-theme="dark"] .option-btn.active {
+    color: white;
+}
+
+/* ===================================
+   7. CATEGORY ITEMS - V1 Fill Selected
+   =================================== */
 .category-list {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
 }
 
-/* Pojedina kategorija */
 .category-item {
     flex: 0 0 calc(50% - 4px);
-    padding: 16px;
-    border: 2px solid var(--color-border);
-    background: var(--color-surface);
-    border-radius: 12px;
+    padding: 18px;
+    background: transparent;
+    border: 0.5px solid var(--color-border);
+    border-radius: 10px;
+    text-align: center;
     cursor: pointer;
     transition: var(--transition);
-    font-weight: 500;
-    text-align: center;
+    font-size: 18px;
+    font-weight: 300;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text);
 }
 
 .category-item:hover {
-    border-color: var(--color-text);
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px var(--color-shadow);
 }
 
-/* Odabrana kategorija */
+.category-item:active {
+    transform: translateY(0) scale(0.98); /* Poništi hover + lagano smanji */
+    box-shadow: 0 2px 8px var(--color-shadow); /* Manja sjena */
+    border-color: var(--color-accent); /* Tamnija boja bordera */
+    background: var(--color-accent);
+}
+
 .category-item.selected {
     background: var(--color-accent);
-    color: white;
     border-color: var(--color-accent);
+    color: white;
 }
 
-/* Grupa gumba (Natrag i Dalje) */
+[data-theme="dark"] .category-item:hover {
+    box-shadow: 0 4px 20px var(--color-shadow);
+}
+
+/* Button group */
 .button-group {
     display: flex;
     gap: 12px;
@@ -351,7 +493,7 @@ body {
 }
 
 /* ===================================
-   EKRAN ZA UNOS IMENA IGRAČA
+   6. INPUT FIELDS - V1 Thin Border
    =================================== */
 .player-names-container {
     display: flex;
@@ -359,31 +501,31 @@ body {
     gap: 24px;
 }
 
-/* Sekcija za jedan tim */
 .team-section {
     background: var(--color-surface);
     padding: 24px;
     border-radius: 16px;
-    border: 2px solid var(--color-border);
+    border: 0.5px solid var(--color-border);
 }
 
-/* Naslov tima (TIM 1, TIM 2) */
 .team-title {
     font-family: var(--font-display);
     font-size: 20px;
-    font-weight: 700;
+    font-weight: 400;
     margin-bottom: 16px;
     color: var(--color-accent);
 }
 
-/* Input polje za ime igrača */
 .player-input {
     width: 100%;
-    padding: 14px 16px;
-    border: 2px solid var(--color-border);
-    border-radius: 12px;
+    padding: 14px 18px;
+    background: transparent;
+    border: 0.5px solid var(--color-border);
+    border-radius: 8px;
     font-family: var(--font-body);
-    font-size: 16px;
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--color-text);
     margin-bottom: 12px;
     transition: var(--transition);
 }
@@ -391,50 +533,55 @@ body {
 .player-input:focus {
     outline: none;
     border-color: var(--color-accent);
+    box-shadow: 0 0 15px var(--color-shadow);
+}
+
+[data-theme="dark"] .player-input {
+    color: var(--color-text);
+}
+
+[data-theme="dark"] .player-input:focus {
+    box-shadow: 0 0 20px var(--color-shadow);
 }
 
 /* ===================================
-   EKRAN PRIJE RUNDE - "TIM X NA REDU STE!"
+   PRIJE RUNDE
    =================================== */
 .round-info {
     text-align: center;
     padding: 40px 0;
 }
 
-/* Naziv tima koji je na redu */
 .team-announcement {
     font-family: var(--font-display);
     font-size: 32px;
-    font-weight: 300;
+    font-weight: 200;
     margin-bottom: 12px;
     color: var(--color-accent);
 }
 
-/* Podnaslov "NA REDU STE!" */
 .round-subtitle {
     font-family: var(--font-display);
-    font-size: 20px;
-    font-weight: 600;
+    font-size: 16px;
+    font-weight: 300;
     color: var(--color-text-secondary);
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.15em;
     margin-bottom: 40px;
 }
 
-/* Kontejner za informacije o ulogama (tko čita, tko objašnjava) */
 .roles-info {
     background: var(--color-surface);
     padding: 32px;
     border-radius: 16px;
-    border: 2px solid var(--color-border);
+    border: 0.5px solid var(--color-border);
     margin-bottom: 40px;
 }
 
-/* Tekst uloga ("Marko čita", "Ana objašnjava") */
 .role-text {
-    font-size: 18px;
+    font-size: 16px;
     margin-bottom: 8px;
-    font-weight: 500;
+    font-weight: 300;
 }
 
 .role-text:last-child {
@@ -442,80 +589,107 @@ body {
 }
 
 /* ===================================
-   EKRAN IGRE - Glavni ekran s riječima
+   GAME SCREEN
    =================================== */
 
-/* Sticky scoreboard na vrhu game ekrana */
+/* 8. SCOREBOARD - V3 Card Style */
 .sticky-scoreboard {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: 8px;
-    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
     margin-bottom: 20px;
 }
 
-/* Jedan redak u scoreboardu (tim + imena + bodovi) */
 .scoreboard-row {
     display: flex;
-    align-items: center;
-    padding: 8px 0;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: var(--color-surface);
+    border: 0.5px solid var(--color-border);
+    border-radius: 10px;
     font-size: 14px;
+    font-weight: 300;
+    color: var(--color-text);
+    transition: var(--transition);
+    align-items: center;
 }
 
-.scoreboard-row:not(:last-child) {
-    border-bottom: 1px solid var(--color-border);
+.scoreboard-row:hover {
+    transform: translateX(4px);
+    border-color: var(--color-accent);
 }
 
-/* Naziv tima (TIM 1, TIM 2) */
+[data-theme="dark"] .scoreboard-row:hover {
+    border-color: var(--color-accent);
+}
+
 .scoreboard-team-label {
-    font-weight: 600;
+    font-weight: 400;
     min-width: 60px;
 }
 
-/* Separator : */
 .scoreboard-separator {
     margin: 0 8px;
     color: var(--color-text-secondary);
 }
 
-/* Imena igrača */
 .scoreboard-players {
     flex: 1;
-    min-width: 0;   /* 👈 KLJUČNO */
+    min-width: 0;
     color: var(--color-text-secondary);
+    font-size: 13px;
 }
 
-/* Bodovi */
 .scoreboard-points {
-    font-weight: 600;
-    font-size: 20px;
+    font-weight: 400;
+    font-size: 18px;
     color: var(--color-accent);
     min-width: 30px;
     text-align: right;
 }
 
-/* Header s tajmerom i rezultatom */
+/* Game header */
 .game-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 60px;
+    margin-bottom: 40px;
 }
 
 .timer-container {
     flex: 1;
 }
 
-/* Tajmer (odbrojavanje) */
+/* 5. TIMER - V3 Progress Ring */
 .timer {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-family: var(--font-display);
-    font-size: 36px;
-    font-weight: 300;
+    font-size: 32px;
+    font-weight: 100;
     color: var(--color-accent);
-    line-height: 1;
+    z-index: 1;
 }
 
-/* Animacija upozorenja kada je malo vremena preostalo */
+.timer::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 0.5px solid var(--color-border);
+    border-radius: 50%;
+    border-top-color: var(--color-accent);
+    animation: spin 60s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
 .timer.warning {
     animation: pulse 0.5s ease-in-out infinite;
 }
@@ -525,32 +699,38 @@ body {
     50% { opacity: 0.5; }
 }
 
-/* Prikaz trenutnog rezultata u ovom krugu */
+[data-theme="dark"] .timer::before {
+    border-color: var(--color-border);
+    border-top-color: var(--color-accent);
+}
+
+/* Score display */
 .score-display {
     text-align: right;
 }
 
 .score-label {
     display: block;
-    font-size: 12px;
+    font-size: 11px;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
     color: var(--color-text-secondary);
     margin-bottom: 4px;
+    font-weight: 300;
 }
 
 .score-value {
     font-family: var(--font-display);
     font-size: 24px;
-    font-weight: 300;
+    font-weight: 200;
 }
 
-/* Kontejner za prikaz riječi */
+/* 4. WORD DISPLAY - V1 Simple Border (Light) / Purple Border (Dark) */
 .word-container {
+    padding: 60px 40px;
     background: var(--color-surface);
-    padding: 60px 32px;
-    border-radius: 8px;
-    border: 1px solid var(--color-border);
+    border: 0.5px solid var(--color-border);
+    border-radius: 12px;
     margin-bottom: 32px;
     min-height: 180px;
     display: flex;
@@ -558,221 +738,289 @@ body {
     justify-content: center;
 }
 
-/* Sama riječ koja se objašnjava */
+[data-theme="dark"] .word-container {
+    border-color: var(--color-accent);
+}
+
 .word {
     font-family: var(--font-display);
     font-size: clamp(24px, 6vw, 36px);
-    font-weight: 300;
+    font-weight: 200;
     text-align: center;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.15em;
     line-height: 1.3;
+    color: var(--color-text);
 }
 
-/* Kontejner za gumbe "Točno" i "Preskoči" */
+[data-theme="dark"] .word {
+    color: var(--color-accent);
+}
+
+/* 9. CONTROL BUTTONS */
+.game-controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+    width: 100%;
+}
+
+.btn-pause,
+.btn-sound,
+.btn-undo {
+    padding: 12px;
+    background: transparent;
+    border: 0.5px solid var(--color-border);
+    border-radius: 8px;
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 300;
+    cursor: pointer;
+    transition: var(--transition);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text);
+}
+
+.btn-pause,
+.btn-undo {
+    flex: 1;
+}
+
+.btn-sound {
+    flex: 0 0 60px;
+    font-size: 20px;
+    text-transform: none;
+    letter-spacing: 0;
+    padding: 8px;
+}
+
+.btn-pause:hover,
+.btn-sound:hover,
+.btn-undo:hover {
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--color-shadow);
+}
+
+[data-theme="dark"] .btn-pause:hover,
+[data-theme="dark"] .btn-sound:hover,
+[data-theme="dark"] .btn-undo:hover {
+    box-shadow: 0 4px 15px var(--color-shadow);
+}
+
+.btn-pause.paused {
+    background: var(--color-accent);
+    color: white;
+    border-color: var(--color-accent);
+}
+
+.btn-sound.muted {
+    opacity: 0.5;
+}
+
+.btn-undo {
+    color: var(--color-text-secondary);
+    font-size: 11px;
+}
+
+.btn-undo:hover {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+}
+
+/* 3. GAME BUTTONS - V1 Colored Glow */
 .game-buttons {
     display: flex;
     gap: 16px;
 }
 
-/* Pojedini gumb u igri (Točno ili Preskoči) */
 .game-btn {
     flex: 1;
-    padding: 18px;
-    border: none;
-    border-radius: 8px;
+    padding: 24px;
+    background: transparent;
+    border: 0.5px solid var(--color-border);
+    border-radius: 12px;
     cursor: pointer;
     transition: var(--transition);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 6px;
-    font-family: var(--font-display);
-}
-
-/* Gumb "Preskoči" (narančasti) */
-.btn-skip {
-    background: var(--color-skip);
-    color: white;
+    gap: 8px;
+    color: var(--color-text);
 }
 
 .btn-skip:hover {
+    border-color: var(--color-skip);
+    box-shadow: 0 0 20px rgba(255, 69, 58, 0.3);
     transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(255, 149, 0, 0.3);
-}
-
-/* Gumb "Točno" (zeleni) */
-.btn-correct {
-    background: var(--color-correct);
-    color: white;
 }
 
 .btn-correct:hover {
+    border-color: var(--color-correct);
+    box-shadow: 0 0 20px rgba(52, 199, 89, 0.3);
     transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(52, 199, 89, 0.3);
 }
 
-/* Ikona na gumbu (✓ i ↷) */
 .btn-icon {
-    font-size: 24px;
-    font-weight: 400;
+    font-size: 28px;
+    font-weight: 200;
 }
 
-/* Tekst na gumbu ("TOČNO" i "PRESKOČI") */
 .btn-label {
-    font-size: 15px;
-    font-weight: 500;
+    font-size: 12px;
+    font-weight: 300;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
 }
 
-/* Bodovi na gumbu (+1 i -1) */
 .btn-points {
     font-size: 12px;
-    opacity: 0.7;
+    opacity: 0.6;
+    font-weight: 300;
 }
 
 /* ===================================
-   EKRAN NAKON RUNDE - Prikaz rezultata
+   NAKON RUNDE
    =================================== */
-
-/* Kontejner za rezultat runde */
 .round-result {
     text-align: center;
     background: var(--color-surface);
     padding: 60px 40px;
     border-radius: 24px;
-    border: 2px solid var(--color-border);
+    border: 0.5px solid var(--color-border);
     margin-bottom: 32px;
 }
 
-/* Labela "Osvojili ste" */
 .result-label {
-    font-size: 16px;
+    font-size: 14px;
     color: var(--color-text-secondary);
     margin-bottom: 8px;
+    font-weight: 300;
 }
 
-/* Rezultat (+5, -2, itd.) */
 .result-score {
     font-family: var(--font-display);
     font-size: 48px;
-    font-weight: 300;
+    font-weight: 200;
     color: var(--color-accent);
     margin: 12px 0;
 }
 
-/* Kontejner za tablicu rezultata */
+/* Scoreboard */
 .scoreboard {
     margin-bottom: 32px;
 }
 
-/* Naslov tablice "Trenutno Stanje" */
 .scoreboard-title {
     font-family: var(--font-display);
-    font-size: 20px;
-    font-weight: 700;
+    font-size: 16px;
+    font-weight: 300;
     margin-bottom: 16px;
     text-align: center;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
     color: var(--color-text-secondary);
 }
 
-/* Lista timova i njihovih rezultata */
 .scoreboard-list {
-    background: var(--color-surface);
-    border-radius: 16px;
-    border: 2px solid var(--color-border);
-    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
-/* Jedan redak u tablici (tim + rezultat) */
 .scoreboard-item {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding: 20px 24px;
-    border-bottom: 2px solid var(--color-border);
+    padding: 20px;
+    background: var(--color-surface);
+    border: 0.5px solid var(--color-border);
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--color-text);
+    transition: var(--transition);
 }
 
-.scoreboard-item:last-child {
-    border-bottom: none;
+.scoreboard-item:hover {
+    transform: translateX(4px);
+    border-color: var(--color-accent);
 }
 
-/* Prvi tim (vodeći) */
 .scoreboard-item.leader {
-    background: var(--color-accent);
-    color: white;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 15px var(--color-shadow);
 }
 
-/* Ime tima */
+[data-theme="dark"] .scoreboard-item:hover {
+    border-color: var(--color-accent);
+}
+
+[data-theme="dark"] .scoreboard-item.leader {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 20px var(--color-shadow);
+}
+
 .team-name {
     font-family: var(--font-display);
-    font-size: 18px;
-    font-weight: 700;
+    font-size: 16px;
+    font-weight: 400;
 }
 
-/* Rezultat tima */
 .team-score {
     font-family: var(--font-display);
-    font-size: 24px;
-    font-weight: 500;
+    font-size: 20px;
+    font-weight: 300;
+    color: var(--color-accent);
 }
 
 /* ===================================
-   EKRAN KRAJA IGRE - Pobjednik
+   KRAJ IGRE
    =================================== */
 .winner-section {
     text-align: center;
     padding: 60px 0;
 }
 
-/* Naslov "POBJEDNIK!" */
 .winner-title {
     font-family: var(--font-display);
-    font-size: 24px;
-    font-weight: 600;
+    font-size: 20px;
+    font-weight: 300;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.15em;
     color: var(--color-text-secondary);
     margin-bottom: 16px;
 }
 
-/* Ime pobjedničkog tima */
 .winner-team {
     font-family: var(--font-display);
     font-size: 36px;
-    font-weight: 300;
+    font-weight: 200;
     color: var(--color-accent);
     margin-bottom: 12px;
 }
 
-/* Konačni rezultat pobjednika */
 .winner-score {
-    font-size: 20px;
+    font-size: 18px;
+    font-weight: 300;
     color: var(--color-text-secondary);
 }
 
-/* Konačna tablica rezultata */
 .final-scoreboard {
     margin-bottom: 40px;
 }
 
 /* ===================================
-   EKRAN ZA CUSTOM LISTE
+   CUSTOM LISTE
    =================================== */
-
-/* Forma za kreiranje nove liste */
 .custom-list-form {
     background: var(--color-surface);
     padding: 32px;
     border-radius: 16px;
-    border: 2px solid var(--color-border);
+    border: 0.5px solid var(--color-border);
     margin-bottom: 32px;
 }
 
-/* Grupa polja u formi */
 .form-group {
     margin-bottom: 24px;
 }
@@ -781,30 +1029,43 @@ body {
     margin-bottom: 0;
 }
 
-/* Input polje (naziv teme) */
 .input-field {
     width: 100%;
-    padding: 14px 16px;
-    border: 2px solid var(--color-border);
-    border-radius: 12px;
+    padding: 14px 18px;
+    background: transparent;
+    border: 0.5px solid var(--color-border);
+    border-radius: 8px;
     font-family: var(--font-body);
-    font-size: 16px;
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--color-text);
     transition: var(--transition);
 }
 
 .input-field:focus {
     outline: none;
     border-color: var(--color-accent);
+    box-shadow: 0 0 15px var(--color-shadow);
 }
 
-/* Textarea polje (riječi) */
+[data-theme="dark"] .input-field {
+    color: var(--color-text);
+}
+
+[data-theme="dark"] .input-field:focus {
+    box-shadow: 0 0 20px var(--color-shadow);
+}
+
 .textarea-field {
     width: 100%;
-    padding: 14px 16px;
-    border: 2px solid var(--color-border);
-    border-radius: 12px;
+    padding: 14px 18px;
+    background: transparent;
+    border: 0.5px solid var(--color-border);
+    border-radius: 8px;
     font-family: var(--font-body);
-    font-size: 16px;
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--color-text);
     resize: vertical;
     transition: var(--transition);
 }
@@ -812,268 +1073,120 @@ body {
 .textarea-field:focus {
     outline: none;
     border-color: var(--color-accent);
+    box-shadow: 0 0 15px var(--color-shadow);
 }
 
-/* Kontejner za spremljene liste */
+[data-theme="dark"] .textarea-field {
+    color: var(--color-text);
+}
+
+[data-theme="dark"] .textarea-field:focus {
+    box-shadow: 0 0 20px var(--color-shadow);
+}
+
 .saved-lists {
     margin-bottom: 32px;
 }
 
-/* Podnaslov "Spremljene Liste" */
 .section-subtitle {
     font-family: var(--font-display);
-    font-size: 20px;
-    font-weight: 700;
+    font-size: 16px;
+    font-weight: 300;
     margin-bottom: 16px;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
     color: var(--color-text-secondary);
 }
 
-/* Lista svih spremljenih custom listi */
 .saved-lists-list {
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
 
-/* Jedna spremljena lista */
 .saved-list-item {
     background: var(--color-surface);
     padding: 20px;
     border-radius: 12px;
-    border: 2px solid var(--color-border);
+    border: 0.5px solid var(--color-border);
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-/* Naziv custom liste */
 .list-name {
-    font-weight: 600;
-    font-size: 16px;
+    font-weight: 400;
+    font-size: 15px;
 }
 
-/* Broj riječi u listi */
 .list-count {
     color: var(--color-text-secondary);
-    font-size: 14px;
+    font-size: 13px;
+    font-weight: 300;
     margin-top: 4px;
 }
 
-/* Akcijski gumbi (Uredi, Obriši) */
 .list-actions {
     display: flex;
     gap: 8px;
 }
 
-/* Pojedini akcijski gumb */
 .action-btn {
     padding: 8px 16px;
-    border: 2px solid var(--color-border);
-    background: var(--color-surface);
+    border: 0.5px solid var(--color-border);
+    background: transparent;
     border-radius: 8px;
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 13px;
+    font-weight: 300;
     cursor: pointer;
     transition: var(--transition);
+    color: var(--color-text);
 }
 
 .action-btn:hover {
-    border-color: var(--color-text);
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--color-shadow);
 }
 
-/* Gumb za brisanje (crveni) */
 .action-btn.delete {
-    color: var(--color-accent);
-    border-color: var(--color-accent);
+    color: var(--color-skip);
+    border-color: var(--color-skip);
 }
 
 .action-btn.delete:hover {
-    background: var(--color-accent);
+    background: var(--color-skip);
     color: white;
 }
 
-/* Prazno stanje (kad nema spremljenih listi) */
 .empty-state {
     text-align: center;
     padding: 40px;
     color: var(--color-text-secondary);
+    font-weight: 300;
 }
 
 /* ===================================
-   GAME KONTROLE - PAUZA, ZVUK, UNDO
-   =================================== */
-
-/* Kontejner za kontrole - flex layout */
-.game-controls {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 16px;
-    width: 100%; /* Puna širina */
-}
-
-/* Zajednički stil za sve kontrolne gumbe */
-.btn-pause,
-.btn-sound,
-.btn-undo {
-    padding: 12px;
-    background: var(--color-surface);
-    border: 2px solid var(--color-border);
-    border-radius: 8px;
-    font-family: var(--font-display);
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: var(--transition);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-/* Pauza i Undo su iste veličine - dijele prostor jednako */
-.btn-pause,
-.btn-undo {
-    flex: 1; /* Isto širine, dijele prostor */
-}
-
-/* Sound gumb je manji - fiksirani width */
-.btn-sound {
-    flex: 0 0 60px; /* Fiksirano 60px */
-    font-size: 22px; /* Veći za emoji */
-    text-transform: none; /* Emoji ne treba uppercase */
-    letter-spacing: 0;
-    padding: 8px;
-}
-
-/* Hover efekti */
-.btn-pause:hover,
-.btn-sound:hover,
-.btn-undo:hover {
-    border-color: var(--color-text);
-    transform: translateY(-2px);
-}
-
-/* Pauzirano stanje */
-.btn-pause.paused {
-    background: var(--color-accent);
-    color: white;
-    border-color: var(--color-accent);
-}
-
-/* Muted stanje */
-.btn-sound.muted {
-    background: #f0f0f0;
-    opacity: 0.6;
-}
-
-/* Undo specifični stil */
-.btn-undo {
-    background: var(--color-surface);
-    color: var(--color-text-secondary);
-    font-size: 13px;
-}
-
-.btn-undo:hover {
-    color: var(--color-accent);
-    border-color: var(--color-accent);
-}
-
-/* ===================================
-   HOME GUMB - Floating top-left
-   =================================== */
-
-/* Floating home button */
-
-.home-btn {
-    display: none; /* Po defaultu SKRIVEN */
-}
-
-.home-btn:not(.hidden) {
-    display:flex;
-    position: absolute;
-    top: -60pxpx;
-    left: 0;
-    width: 48px;
-    height: 48px;
-    background: var(--color-surface);
-    border: 2px solid var(--color-border);
-    border-radius: 50%;
-    font-size: 22px;
-    cursor: pointer;
-    z-index: 1000;
-    box-shadow: 0 4px 12px var(--color-shadow);
-    transition: var(--transition);
-    align-items: center;
-    justify-content: center;
-}
-
-.home-btn.hidden {
-    display: none !important;
-}
-
-.home-btn:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 16px var(--color-shadow);
-    border-color: var(--color-accent);
-}
-
-.home-btn:active {
-    transform: scale(0.95);
-}
-
-/* Prikaži home gumb na svim ekranima OSIM startScreen */
-.screen.active:not(#startScreen) ~ .home-btn {
-    display: flex;
-}
-
-/* ALTERNATIVA - jednostavniji način (dodaj klasu na body) */
-body.in-game .home-btn {
-    display: flex;
-}
-
-/* Responsive - malo manji na mobitelu */
-@media (max-width: 600px) {
-    .home-btn {
-        width: 44px;
-        height: 44px;
-        font-size: 20px;
-        top: 12px;
-        left: 12px;
-    }
-}
-
-/* Extra mali ekrani */
-@media (max-width: 380px) {
-    .home-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 18px;
-        top: 10px;
-        left: 10px;
-    }
-}
-
-/* ===================================
-   RESPONSIVE - Prilagodba za mobitele (POBOLJŠANA VERZIJA)
+   RESPONSIVE - Mobile
    =================================== */
 @media (max-width: 600px) {
-    /* Osnovni padding za container */
     body {
         padding: 12px;
     }
     
-    /* Font size redukcije */
     .game-title {
         font-size: 42px;
     }
     
     .timer {
         font-size: 28px;
+        width: 70px;
+        height: 70px;
     }
     
     .word {
         font-size: 30px;
-	font-weight: 400;
+        font-weight: 300;
         line-height: 1.4;
     }
     
@@ -1089,69 +1202,57 @@ body.in-game .home-btn {
         font-size: 28px;
     }
     
-    /* NOVI: Sticky scoreboard optimizacija */
     .sticky-scoreboard {
-        max-height: 25vh; /* Ne uzima previše ekrana */
+        max-height: 25vh;
         overflow-y: auto;
         font-size: 13px;
-        padding: 8px 12px;
-        -webkit-overflow-scrolling: touch; /* Smooth scroll na iOS */
+        -webkit-overflow-scrolling: touch;
     }
     
     .scoreboard-row {
-        padding: 6px 0;
+        padding: 8px 12px;
         font-size: 12px;
     }
     
     .scoreboard-team-label {
         min-width: 50px;
-        font-size: 16px;
+        font-size: 14px;
     }
     
-    /* 
-    Na malim ekranima sakrij imena igrača 
     .scoreboard-players {
-        display: none;
-    } 
-    */
+        font-size: 12px;
+    }
     
     .scoreboard-points {
         font-size: 16px;
     }
-
-    .scoreboard-players {
-        font-size: 14px;
-    }
-
     
-    /* NOVI: Word container optimizacija */
     .word-container {
         padding: 20px 20px;
         min-height: 100px;
     }
 
-    .home-btn {
+    .home-btn:not(.hidden),
+    .theme-btn:not(.hidden) {
         width: 44px;
         height: 44px;
         font-size: 20px;
-        top: -56px; /* Malo bliže jer je manji */
+        top: -56px;
     }
     
     .container {
-        margin-top: 70px; /* Manje margine jer je gumb manji */
+        margin-top: 70px;
     }
     
-    /* Gumbi jedan ispod drugog na mobitelu */
     .game-buttons {
-	flex-direction: row;   /* u isti red */
+        flex-direction: row;
         gap: 12px;
     }
 
     .game-buttons .game-btn {
-        flex: 1;   /* min širina gumba */
+        flex: 1;
     }
     
-    /* NOVI: Touch target size - iOS preporučuje min 44x44px */
     .game-btn {
         min-height: 64px;
         padding: 8px;
@@ -1160,7 +1261,7 @@ body.in-game .home-btn {
     .btn {
         min-height: 48px;
         padding: 16px 20px;
-        font-size: 15px;
+        font-size: 14px;
     }
     
     .num-btn {
@@ -1169,44 +1270,37 @@ body.in-game .home-btn {
         font-size: 22px;
     }
     
-    /* Kategorije pune širine na mobitelu */
     .category-item {
         flex: 0 0 100%;
-        padding: 6px 18px;
-        font-size: 16px;
-    }
-    
-    /* NOVI: Option buttons optimizacija */
-    .option-btn {
-        padding: 8px 12px;
-        font-size: 15px;
-    }
-    
-    /* NOVI: Difficulty selector ostaje 2x2 ali sa manje paddinga */
-    .difficulty-selector .option-btn {
-        padding: 12px 8px;
+        padding: 14px 18px;
         font-size: 14px;
     }
     
-    /* NOVI: Setup sections kompaktniji */
+    .option-btn {
+        padding: 12px;
+        font-size: 14px;
+    }
+
+    .difficulty-selector .option-btn {
+        padding: 12px 8px;
+        font-size: 13px;
+    }
+    
     .setup-section {
         padding: 14px;
         margin-bottom: 10px;
     }
     
-    /* NOVI: Player input fields lakši za tipkanje */
     .player-input {
         padding: 16px;
-        font-size: 16px; /* Sprječava zoom na iOS */
+        font-size: 16px;
         margin-bottom: 10px;
     }
     
-    /* NOVI: Custom lista textarea manji */
     .textarea-field {
-        font-size: 16px; /* Sprječava zoom na iOS */
+        font-size: 16px;
     }
     
-    /* NOVI: Saved list items stack friendly */
     .saved-list-item {
         flex-direction: column;
         align-items: flex-start;
@@ -1222,7 +1316,6 @@ body.in-game .home-btn {
         flex: 1;
     }
     
-    /* NOVI: Round info kompaktniji */
     .round-info {
         padding: 30px 0;
     }
@@ -1232,10 +1325,9 @@ body.in-game .home-btn {
     }
     
     .role-text {
-        font-size: 16px;
+        font-size: 15px;
     }
     
-    /* NOVI: Score display u game headeru */
     .game-header {
         flex-direction: column;
         gap: 16px;
@@ -1251,39 +1343,39 @@ body.in-game .home-btn {
         text-align: center;
     }
     
-    /* Game kontrole na mobitelu */
     .btn-sound {
         flex: 0 0 50px;
-        font-size: 20px;
+        font-size: 18px;
         padding: 6px;
     }
 }
 
-/* NOVI: Extra mali ekrani (iPhone SE, Android fold phones) */
+/* Extra mali ekrani */
 @media (max-width: 380px) {
     .game-title {
         font-size: 36px;
     }
     
     .word {
-        font-size: 20px;
+        font-size: 24px;
     }
     
     .option-btn {
         padding: 12px 8px;
-        font-size: 14px;
+        font-size: 13px;
     }
     
     .difficulty-selector .option-btn {
         padding: 10px 6px;
-        font-size: 13px;
+        font-size: 12px;
     }
     
     .sticky-scoreboard {
         font-size: 11px;
     }
 
-    .home-btn {
+    .home-btn:not(.hidden),
+    .theme-btn:not(.hidden) {
         width: 40px;
         height: 40px;
         font-size: 18px;
@@ -1293,10 +1385,9 @@ body.in-game .home-btn {
     .container {
         margin-top: 65px;
     }
-
 }
 
-/* NOVI: Landscape mode na mobitelu */
+/* Landscape mode na mobitelu */
 @media (max-width: 900px) and (orientation: landscape) {
     body {
         padding: 8px;
@@ -1325,7 +1416,7 @@ body.in-game .home-btn {
     }
 }
 
-/* NOVI: Prevent zoom on iOS input focus */
+/* Prevent zoom on iOS input focus */
 @supports (-webkit-touch-callout: none) {
     input, textarea, select {
         font-size: 16px !important;

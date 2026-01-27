@@ -47,13 +47,15 @@ let gameState = {
     isPaused: false,
     roundStats: { correct: 0, skipped: 0, totalWords: 0 },
     lastAction: null,
-    soundMuted: false  // DODAJ OVO
+    soundMuted: false,
+    darkMode: false
 };
 
 // Inicijalizacija
 document.addEventListener('DOMContentLoaded', () => {
     loadCategories();
     loadSavedLists();
+    loadTheme();
 });
 
 // === NAVIGACIJA IZMEĐU EKRANA ===
@@ -75,6 +77,24 @@ function showScreen(screenId) {
             homeBtn.classList.remove('hidden');
         }
     }
+
+    // THEME BUTTON kontrola (DODAJ OVO)
+    const themeBtn = document.getElementById('themeBtn');
+    if (themeBtn) {
+        // Opcija 1: UVIJEK vidljiv (trenutno aktivno)
+        themeBtn.classList.remove('hidden');
+
+   //  Opcija 2: Sakrij na određenim ekranima (zakomentirano)
+   //     if (screenId === 'startScreen' ||  
+   //         screenId === 'gameScreen' ||  
+   //         screenId === 'endScreen' ||  
+   //         screenId === 'customListsScreen') {
+   //         themeBtn.classList.add('hidden');
+   //     } else {
+   //         themeBtn.classList.remove('hidden');
+   //     }
+     }
+
 }
 
 function showStart() {
@@ -933,6 +953,39 @@ function goHome() {
     // gameState.currentTeamIndex = 0;
     // gameState.currentRound = 0;
 }
+
+// ===== DODAJ NA KRAJ app.js =====
+
+// NIGHT MODE TOGGLE
+function toggleTheme() {
+    gameState.darkMode = !gameState.darkMode;
+    
+    const html = document.documentElement;
+    const btn = document.getElementById('themeBtn');
+    
+    if (gameState.darkMode) {
+        html.setAttribute('data-theme', 'dark');
+        btn.textContent = '☀️'; // Sunce za prebacivanje na light
+        localStorage.setItem('aliasTheme', 'dark');
+    } else {
+        html.removeAttribute('data-theme');
+        btn.textContent = '🌙'; // Mjesec za prebacivanje na dark
+        localStorage.setItem('aliasTheme', 'light');
+    }
+}
+
+// Učitaj spremljenu temu pri učitavanju stranice
+function loadTheme() {
+    const savedTheme = localStorage.getItem('aliasTheme');
+    
+    if (savedTheme === 'dark') {
+        gameState.darkMode = true;
+        document.documentElement.setAttribute('data-theme', 'dark');
+        const btn = document.getElementById('themeBtn');
+        if (btn) btn.textContent = '☀️';
+    }
+}
+
 
 // KEYBOARD SHORTCUTS
 document.addEventListener('keydown', (e) => {
