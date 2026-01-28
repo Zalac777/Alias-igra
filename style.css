@@ -669,11 +669,14 @@ body {
     gap: 20px;
 }
 
+/* ===================================
+   5. TIMER - SVG Progress Ring
+   =================================== */
 .timer-container {
     position: relative;
     width: 80px;
     height: 80px;
-    flex-shrink: 0; /* Sprječava da se timer smanji */
+    flex-shrink: 0;
 }
 
 .timer-ring {
@@ -710,15 +713,19 @@ body {
 /* Tekst u sredini */
 .timer-text {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 0;
+    left: 0;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-family: var(--font-display);
     font-size: 32px;
     font-weight: 100;
     color: var(--color-accent);
-    z-index: 1;
-    pointer-events: none; /* Ne blokira klikove */
+    z-index: 2;
+    pointer-events: none;
 }
 
 .timer-text.warning {
@@ -1210,10 +1217,20 @@ body {
         font-size: 42px;
     }
     
-    .timer {
-        font-size: 28px;
+    .timer-container {
         width: 70px;
         height: 70px;
+    }
+    
+    .timer-ring {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .timer-text {
+        width: 70px;
+        height: 70px;
+        font-size: 26px;
     }
     
     .word {
