@@ -110,6 +110,7 @@
             </div>
             <div class="button-group">
                 <button class="btn btn-secondary" onclick="showSetup()">NATRAG</button>
+		<button class="btn btn-tertiary" onclick="fillRandomNames()">🎲 RANDOM</button>
                 <button class="btn btn-primary" onclick="startGame()">POČNI IGRU</button>
             </div>
         </div>
@@ -136,13 +137,17 @@
 
             <div class="game-header">
                 <div class="timer-container">
-                    <div class="timer" id="timer">60</div>
+                    <svg class="timer-ring" width="80" height="80">
+                        <circle class="timer-ring-bg" cx="40" cy="40" r="36" />
+                        <circle class="timer-ring-progress" cx="40" cy="40" r="36" id="timerCircle" />
+                    </svg>
+                    <div class="timer-text" id="timer">60</div>
                 </div>
                 <div class="score-display">
                     <span class="score-label">Ovaj krug:</span>
                     <span class="score-value" id="roundScore">0</span>
-                </div>
-            </div>
+                </div>  <!-- ← DODAJ OVO! -->
+            </div>  <!-- ← OVO JE POSTOJEĆI closing tag za .game-header -->
 
             <div class="word-container">
                 <div class="word" id="currentWord">SPREMNO</div>
@@ -150,9 +155,9 @@
 
             <!-- Pauza i Undo gumbi -->
             <div class="game-controls">
-            	<button class="btn-pause" id="pauseBtn" onclick="togglePause()">PAUZIRAJ</button>
-	   	 <button class="btn-sound" id="soundBtn" onclick="toggleSound()">🔊</button>  <!-- DODAJ -->
-           	 <button class="btn-undo" id="undoBtn" onclick="undoLastAction()">↶ PONIŠTI</button>
+            <button class="btn-pause" id="pauseBtn" onclick="togglePause()">PAUZIRAJ</button>
+            <button class="btn-sound" id="soundBtn" onclick="toggleSound()">🔊</button>  <!-- DODAJ -->
+            <button class="btn-undo" id="undoBtn" onclick="undoLastAction()">↶ PONIŠTI</button>
 	    </div>
 
             <!-- Glavni game gumbi -->
@@ -186,7 +191,7 @@
                 </div>
             </div>
 
-             <!-- DODAJ OVU BUTTON GROUP -->
+            <!-- DODAJ OVU BUTTON GROUP -->
             <div class="button-group">
                 <button class="btn btn-secondary" onclick="goHome()">🏠 IZBORNIK</button>
                 <button class="btn btn-primary" onclick="nextTeam()">SLJEDEĆI TIM</button>
@@ -252,6 +257,7 @@
     <script src="rijeci/biblija.js"></script>
     <script src="rijeci/seksualnost.js"></script>
     
+    <script src="rijeci/randomnames.js"></script>
     <script src="rijeci.js"></script>
     <script src="app.js"></script>
 </body>

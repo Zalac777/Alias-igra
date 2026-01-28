@@ -157,7 +157,7 @@ body {
         135deg,
         transparent 0%,
         transparent 30%,
-        rgba(152, 39, 245, 0.9) 50%,
+        rgba(156, 39, 245, 0.9) 50%,
         transparent 70%,
         transparent 100%
     );
@@ -174,7 +174,7 @@ body {
         135deg,
         transparent 0%,
         transparent 30%,
-        rgba(152, 39, 245, 0.6) 50%,
+        rgba(156, 39, 245, 0.9) 50%,
         transparent 70%,
         transparent 100%
     );
@@ -220,7 +220,7 @@ body {
     margin-bottom: 10px;
 }
 
-.btn-primary {
+    .btn-primary {
     background: transparent;
     color: var(--color-text);
     border: 0.5px solid var(--color-border);
@@ -240,7 +240,7 @@ body {
     background: rgba(167, 139, 250, 0.08);
 }
 
-.btn-secondary {
+    .btn-secondary {
     background: transparent;
     color: var(--color-text);
     border: 0.5px solid var(--color-border);
@@ -257,6 +257,26 @@ body {
 }
 
 [data-theme="dark"] .btn-secondary:active {
+    background: rgba(167, 139, 250, 0.08);
+}
+
+.btn-tertiary {
+    background: transparent;
+    color: var(--color-text);
+    border: 0.5px solid var(--color-border);
+}
+
+.btn-tertiary:hover {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 20px var(--color-shadow);
+    transform: translateY(-2px);
+}
+
+.btn-tertiary:active {
+    background: rgba(139, 92, 246, 0.05);
+}
+
+[data-theme="dark"] .btn-tertiary:active {
     background: rgba(167, 139, 250, 0.08);
 }
 
@@ -451,9 +471,8 @@ body {
     text-align: center;
     cursor: pointer;
     transition: var(--transition);
-    font-size: 18px;
+    font-size: 14px;
     font-weight: 300;
-    text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--color-text);
 }
@@ -462,13 +481,6 @@ body {
     border-color: var(--color-accent);
     transform: translateY(-2px);
     box-shadow: 0 4px 15px var(--color-shadow);
-}
-
-.category-item:active {
-    transform: translateY(0) scale(0.98); /* Poništi hover + lagano smanji */
-    box-shadow: 0 2px 8px var(--color-shadow); /* Manja sjena */
-    border-color: var(--color-accent); /* Tamnija boja bordera */
-    background: var(--color-accent);
 }
 
 .category-item.selected {
@@ -614,14 +626,14 @@ body {
     align-items: center;
 }
 
-.scoreboard-row:hover {
+/* .scoreboard-row:hover {
     transform: translateX(4px);
     border-color: var(--color-accent);
-}
+} 
 
 [data-theme="dark"] .scoreboard-row:hover {
     border-color: var(--color-accent);
-}
+} */
 
 .scoreboard-team-label {
     font-weight: 400;
@@ -654,43 +666,62 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 40px;
+    gap: 20px;
 }
 
 .timer-container {
-    flex: 1;
-}
-
-/* 5. TIMER - V3 Progress Ring */
-.timer {
     position: relative;
     width: 80px;
     height: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-shrink: 0; /* Sprječava da se timer smanji */
+}
+
+.timer-ring {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 80px;
+    height: 80px;
+    transform: rotate(-90deg);
+}
+
+/* Pozadinski krug (sivi) */
+.timer-ring-bg {
+    fill: none;
+    stroke: var(--color-border);
+    stroke-width: 2;
+}
+
+/* Progress krug (boja) */
+.timer-ring-progress {
+    fill: none;
+    stroke: var(--color-accent);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-dasharray: 226;
+    stroke-dashoffset: 226;
+    transition: stroke-dashoffset 1s linear;
+}
+
+[data-theme="dark"] .timer-ring-progress {
+    stroke: var(--color-accent);
+}
+
+/* Tekst u sredini */
+.timer-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     font-family: var(--font-display);
     font-size: 32px;
     font-weight: 100;
     color: var(--color-accent);
     z-index: 1;
+    pointer-events: none; /* Ne blokira klikove */
 }
 
-.timer::before {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border: 0.5px solid var(--color-border);
-    border-radius: 50%;
-    border-top-color: var(--color-accent);
-    animation: spin 60s linear infinite;
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
-.timer.warning {
+.timer-text.warning {
     animation: pulse 0.5s ease-in-out infinite;
 }
 
@@ -699,9 +730,10 @@ body {
     50% { opacity: 0.5; }
 }
 
-[data-theme="dark"] .timer::before {
-    border-color: var(--color-border);
-    border-top-color: var(--color-accent);
+/* Score display */
+.score-display {
+    text-align: right;
+    flex-shrink: 0; /* Sprječava da se score smanji */
 }
 
 /* Score display */
@@ -727,7 +759,7 @@ body {
 
 /* 4. WORD DISPLAY - V1 Simple Border (Light) / Purple Border (Dark) */
 .word-container {
-    padding: 60px 40px;
+    padding: 60px 40px; /* Bio je možda 40px, povećaj na 60px */
     background: var(--color-surface);
     border: 0.5px solid var(--color-border);
     border-radius: 12px;
@@ -1262,6 +1294,8 @@ body {
         min-height: 48px;
         padding: 16px 20px;
         font-size: 14px;
+        border: 1px solid var(--color-border);
+        border-color: #c9c9c9;
     }
     
     .num-btn {
@@ -1348,6 +1382,7 @@ body {
         font-size: 18px;
         padding: 6px;
     }
+
 }
 
 /* Extra mali ekrani */

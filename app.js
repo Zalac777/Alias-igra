@@ -219,6 +219,35 @@ function showPlayerNames() {
     showScreen('playerNamesScreen');
 }
 
+function fillRandomNames() {
+    // Provjeri postoji li file
+    if (typeof randomPlayerNames === 'undefined' || !Array.isArray(randomPlayerNames)) {
+        alert('Random imena nisu učitana. Provjerite da je randomNames.js file pravilno učitan.');
+        return;
+    }
+    
+    // Kopiraj array da ne mijenjamo original
+    const availableNames = [...randomPlayerNames];
+    
+    // Promiješaj imena
+    shuffleArray(availableNames);
+    
+    // Popuni input polja
+    const inputs = document.querySelectorAll('.player-input');
+    
+    inputs.forEach((input, index) => {
+        if (index < availableNames.length) {
+            input.value = availableNames[index];
+        } else {
+            // Ako nema dovoljno imena, generiraj "Igrač X"
+            input.value = `Igrač ${index + 1}`;
+        }
+    });
+    
+    // Opcijski: haptic feedback
+    hapticFeedback('light');
+}
+
 // === POČETAK IGRE ===
 
 async function startGame() {
@@ -411,7 +440,22 @@ function updateStickyScoreboard() {
 
 function updateTimer() {
     const timerElement = document.getElementById('timer');
+    const circleElement = document.getElementById('timerCircle');
+    
     timerElement.textContent = gameState.timeRemaining;
+    
+    // Izračunaj progress (koliko je kruga popunjeno)
+    const totalTime = gameState.roundTime;
+    const timeLeft = gameState.timeRemaining;
+    const progress = (totalTime - timeLeft) / totalTime;
+    
+    // SVG circle ima circumference = 2 * PI * radius = 226
+    const circumference = 226;
+    const offset = circumference * (1 - progress);
+    
+    if (circleElement) {
+        circleElement.style.strokeDashoffset = offset;
+    }
     
     // Warning animacija zadnjih 10 sekundi
     if (gameState.timeRemaining <= 10) {
@@ -420,10 +464,10 @@ function updateTimer() {
         timerElement.classList.remove('warning');
     }
     
-    // 🎵 TICK ZVUK zadnje 4 sekunde
+    // TICK ZVUK zadnje 4 sekunde
     if (gameState.timeRemaining <= 4 && gameState.timeRemaining > 0) {
         playTickSound();
-        hapticFeedback('light'); // Bonus: vibracija također
+        hapticFeedback('light');
     }
 }
 
@@ -855,10 +899,10 @@ function toggleSound() {
     
     const btn = document.getElementById('soundBtn');
     if (gameState.soundMuted) {
-        btn.textContent = '🔇';
+        btn.innerHTML = '&#128263;'; // 🔇
         btn.classList.add('muted');
     } else {
-        btn.textContent = '🔊';
+        btn.innerHTML = '&#128266;'; // 🔊
         btn.classList.remove('muted');
     }
 }
@@ -965,11 +1009,11 @@ function toggleTheme() {
     
     if (gameState.darkMode) {
         html.setAttribute('data-theme', 'dark');
-        btn.textContent = '☀️'; // Sunce za prebacivanje na light
+        btn.innerHTML = '&#9728;&#65039;'; // ☀️ Sunce za prebacivanje na light
         localStorage.setItem('aliasTheme', 'dark');
     } else {
         html.removeAttribute('data-theme');
-        btn.textContent = '🌙'; // Mjesec za prebacivanje na dark
+        btn.innerHTML = '&#127769;'; // 🌙 Mjesec za prebacivanje na dark
         localStorage.setItem('aliasTheme', 'light');
     }
 }
@@ -982,7 +1026,7 @@ function loadTheme() {
         gameState.darkMode = true;
         document.documentElement.setAttribute('data-theme', 'dark');
         const btn = document.getElementById('themeBtn');
-        if (btn) btn.textContent = '☀️';
+        if (btn) btn.innerHTML = '&#9728;&#65039;'; // ☀️
     }
 }
 
