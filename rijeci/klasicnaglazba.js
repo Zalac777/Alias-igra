@@ -116,7 +116,6 @@ var klasicnaGlazbaLako = [
     "Vibrato",
 
 // 6. ORKESTRACIJA
-/*
     "Arco tutti",
     "Fanfare",
     "Limeni puhači",
@@ -139,7 +138,6 @@ var klasicnaGlazbaLako = [
     "Wind soli",
     "Woodwind chorale",
     "Drveni puhači",
-*/
 
 // 7. INSTRUMENTI
     "Bas bubanj",
@@ -284,8 +282,6 @@ var klasicnaGlazbaLako = [
     "Veliki durski septakord",
 
 // 12. DIRIGIRANJE
-
-/*
     "2/4 pattern",
     "3/4 pattern",
     "4/4 pattern",
@@ -317,10 +313,8 @@ var klasicnaGlazbaLako = [
     "Taktiranje",
     "Tempo control",
     "Upbeat",
-*/
 
 // 13. ELEKTRONSKA GLAZBA
-/*
     "ADSR (Envelope)",
     "Chorus",
     "Compression",
@@ -341,7 +335,6 @@ var klasicnaGlazbaLako = [
     "Sampling",
     "Sequencer",
     "Signal processing",
-*/
 
 // 14. MUZIKOLOGIJA
     "Analiza glazbe",
@@ -358,10 +351,11 @@ var klasicnaGlazbaLako = [
     "Historijski kontekst",
     "Ikonografija",
     "Kritičko izdanje",
-    "Manuskript",
+    "Manuskripti",
     "Organologija",
+    "Paleografija",
     "Performans praksa",
-    "Provincija",
+    "Provijencija",
     "Semiologija",
     "Sistematska muzikologija",
     "Skica (sketch)",
@@ -533,6 +527,7 @@ var klasicnaGlazbaSrednje = [
 
     "Adalbert Marković",
     "Albe Vidaković",
+    "Aleksandar Ilić",
     "Anđelko Klobučar",
     "Antun Dobronić",
     "Antun Sorkočević",
@@ -546,6 +541,7 @@ var klasicnaGlazbaSrednje = [
     "Dubravko Detoni",
     "Faust Vrančić",
     "Ferdo Livadić",
+    "Fran Đurđevic",
     "Fran Lhotka Kalinski",
     "Frano Parać",
     "Franjo Dugan",
@@ -701,7 +697,6 @@ var klasicnaGlazbaSrednje = [
     "Triple tonguing",
 
 // 6. ORKESTRACIJA
-/*
     "Antiphonal brass",
     "Col legno sekcija",
     "Density control",
@@ -729,7 +724,6 @@ var klasicnaGlazbaSrednje = [
     "String harmonics",
     "Timpani rolls",
     "Tremolo strings",
-*/
 
 // 7. INSTRUMENTI
     "Alt saksofon",
@@ -768,7 +762,6 @@ var klasicnaGlazbaSrednje = [
     "Tone poem",
 
 // 9. KOMPOZICIJA - tehnike
-/*
     "Augmentacija",
     "Basso continuo",
     "Cancrizans",
@@ -792,10 +785,8 @@ var klasicnaGlazbaSrednje = [
     "Tonicization",
     "Unison writing",
     "Voice leading",
-*/
 
 // 10. POLIFONIJA / KONTRAPUNKT
-/*
     "Anticipation",
     "Answer (fuge)",
     "Cambiata",
@@ -827,7 +818,6 @@ var klasicnaGlazbaSrednje = [
     "Voice crossing",
     "Voice exchange",
     "Échappée",
-*/
 
 // 11. HARMONIJA
 
@@ -865,7 +855,6 @@ var klasicnaGlazbaSrednje = [
     "Pravilo vođenja glasova",
 
 // 12. DIRIGIRANJE
-/*
     "Articulation indication",
     "Asymmetric meters",
     "Balans orkestar",
@@ -917,10 +906,8 @@ var klasicnaGlazbaSrednje = [
     "Tape music",
     "Voltage control",
     "Wavetable synthesis",
-    */
 
 // 14. MUZIKOLOGIJA
-/*
     "Affektenlehre",
     "Akustika",
     "Autentični instrumenti",
@@ -945,7 +932,6 @@ var klasicnaGlazbaSrednje = [
     "Socijalna muzikologija",
     "Temperament",
     "Well temperament",
-    */
 
 // 16. OZNAKE DINAMIKE
     "Al niente",
@@ -1031,14 +1017,12 @@ var klasicnaGlazbaTesko = [
     "Šezdesetčetvrtinka",
     "Šezdesetčetvrtinska pauza",
 
-    /*
 // 5. ARTIKULACIJE
     "Cirkularno disanje",
     "Multiphonics",
 
 // 9. KOMPOZICIJA - tehnike
     "Modulation scheme",
-*/
 
 // 10. POLIFONIJA / KONTRAPUNKT
     "Prva vrsta",

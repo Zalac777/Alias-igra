@@ -55,16 +55,6 @@ var dostupneTeme = [
         }
     },
     { 
-        naziv: "Filozofija", 
-        file: "rijeci/filozofija.js", 
-        variables: {
-            lako: "filozofijaRijeciLako",
-            srednje: "filozofijaRijeciSrednje",
-            tesko: "filozofijaRijeciTesko"
-        }
-    },
-
-    { 
         naziv: "Biblija", 
         file: "rijeci/biblija.js", 
         variables: {
