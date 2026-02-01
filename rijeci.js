@@ -28,6 +28,15 @@ var dostupneTeme = [
         }
     },
     { 
+        naziv: "Klasična glazba", 
+        file: "rijeci/klasicnaglazba.js", 
+        variables: {
+            lako: "klasicnaGlazbaLako",
+            srednje: "klasicnaGlazbaSrednje",
+            tesko: "klasicnaGlazbaTesko"
+        }
+    },
+    { 
         naziv: "Hrana", 
         file: "rijeci/hrana.js", 
         variables: {
@@ -46,6 +55,16 @@ var dostupneTeme = [
         }
     },
     { 
+        naziv: "Filozofija", 
+        file: "rijeci/filozofija.js", 
+        variables: {
+            lako: "filozofijaRijeciLako",
+            srednje: "filozofijaRijeciSrednje",
+            tesko: "filozofijaRijeciTesko"
+        }
+    },
+
+    { 
         naziv: "Biblija", 
         file: "rijeci/biblija.js", 
         variables: {
@@ -63,6 +82,16 @@ var dostupneTeme = [
             tesko: "seksualnostRijeciTesko"
         }
     },
+    { 
+        naziv: "Psovke", 
+        file: "rijeci/psovke.js", 
+        variables: {
+            lako: "psovkeRijeciLako",
+            srednje: "psovkeRijeciSrednje",
+            tesko: "psovkeRijeciTesko"
+        }
+    },
+
 
 
 ];

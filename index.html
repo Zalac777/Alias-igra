@@ -37,6 +37,7 @@
             </div>
             <button class="btn btn-primary" onclick="showSetup()">NOVA IGRA</button>
             <button class="btn btn-secondary" onclick="showCustomLists()">VLASTITE LISTE</button>
+            <button class="btn btn-tertiary" onclick="showRules()">PRAVILA IGRE</button>
         </div>
 
         <!-- Setup Ekran -->
@@ -64,6 +65,7 @@
             <div class="setup-section">
                 <label class="label">Vrijeme (sekunde)</label>
                 <div class="option-selector">
+                    <button class="option-btn" onclick="selectTime(15)">15</button>
                     <button class="option-btn active" onclick="selectTime(30)">30</button>
                     <button class="option-btn" onclick="selectTime(60)">60</button>
                     <button class="option-btn" onclick="selectTime(90)">90</button>
@@ -92,7 +94,7 @@
             <div class="setup-section">
                 <label class="label">Odaberi teme</label>
                 <div id="categoryList" class="category-list">
-                    <!-- Kategorije će biti učitane dinamički -->
+                    <!-- Kategorije Ä‡e biti učitane dinamički -->
                 </div>
             </div>
 
@@ -106,7 +108,7 @@
         <div id="playerNamesScreen" class="screen">
             <h2 class="screen-title">Unesite Imena Igrača</h2>
             <div id="playerNamesContainer" class="player-names-container">
-                <!-- Polja za imena će biti generirana dinamički -->
+                <!-- Polja za imena Ä‡e biti generirana dinamički -->
             </div>
             <div class="button-group">
                 <button class="btn btn-secondary" onclick="showSetup()">NATRAG</button>
@@ -146,8 +148,8 @@
                 <div class="score-display">
                     <span class="score-label">Ovaj krug:</span>
                     <span class="score-value" id="roundScore">0</span>
-                </div>  <!-- ← DODAJ OVO! -->
-            </div>  <!-- ← OVO JE POSTOJEĆI closing tag za .game-header -->
+                </div>  <!-- â† DODAJ OVO! -->
+            </div>  <!-- â† OVO JE POSTOJEćI closing tag za .game-header -->
 
             <div class="word-container">
                 <div class="word" id="currentWord">SPREMNO</div>
@@ -187,7 +189,15 @@
             <div class="scoreboard">
                 <h3 class="scoreboard-title">Trenutno Stanje</h3>
                 <div id="scoreboardContainer" class="scoreboard-list">
-                    <!-- Rezultati će biti prikazani ovdje -->
+                    <!-- Rezultati Ä‡e biti prikazani ovdje -->
+                </div>
+            </div>
+
+            <!-- NOVI DIO - Pregled riječi iz kruga -->
+            <div class="round-words-section">
+                <h3 class="scoreboard-title">Riječi iz kruga</h3>
+                <div id="roundWordsContainer" class="round-words-list">
+                    <!-- Riječi će biti prikazane ovdje -->
                 </div>
             </div>
 
@@ -214,8 +224,8 @@
             </div>
 
             <div class="button-group">
-    		 <button class="btn btn-secondary" onclick="goHome()">🏠 IZBORNIK</button>
-    		 <button class="btn btn-primary" onclick="showSetup()">NOVA IGRA</button>
+                <button class="btn btn-secondary" onclick="goHome()">🏠 IZBORNIK</button>
+                <button class="btn btn-primary" onclick="showSetup()">NOVA IGRA</button>
             </div>
         </div>
 
@@ -246,19 +256,41 @@
 
             <button class="btn btn-secondary" onclick="showStart()">NATRAG</button>
         </div>
+
+
+
     </div>
 
     <!-- Učitaj sve teme -->
     <script src="rijeci/sport.js"></script>
     <script src="rijeci/filmovi.js"></script>
     <script src="rijeci/glazba.js"></script>
+    <script src="rijeci/klasicnaglazba.js"></script>
     <script src="rijeci/hrana.js"></script>
     <script src="rijeci/geografija.js"></script>
+    <script src="rijeci/filozofija.js"></script>
     <script src="rijeci/biblija.js"></script>
     <script src="rijeci/seksualnost.js"></script>
+    <script src="rijeci/psovke.js"></script>
     
     <script src="rijeci/randomnames.js"></script>
     <script src="rijeci.js"></script>
+    <script src="passwordEncryption.js"></script>
     <script src="app.js"></script>
+
+    <!-- Password Modal -->
+    <div class="modal-overlay" id="passwordModal">
+        <div class="modal-content">
+            <div class="modal-icon">🔒</div>
+            <h3 class="modal-title" id="modalTitle"></h3>
+            <p class="modal-warning" id="modalWarning"></p>
+            <input type="password" class="modal-input" id="modalPasswordInput" placeholder="••••••••" autocomplete="off" spellcheck="false">
+            <p class="modal-error" id="modalError"></p>
+            <div class="modal-buttons">
+                <button class="btn btn-secondary modal-btn" id="modalCancel">ODUSTANI</button>
+                <button class="btn btn-primary modal-btn" id="modalConfirm">POTVRDI</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

@@ -48,7 +48,8 @@ let gameState = {
     roundStats: { correct: 0, skipped: 0, totalWords: 0 },
     lastAction: null,
     soundMuted: false,
-    darkMode: false
+    darkMode: false,
+    roundWords: [] // Prati sve riječi iz trenutnog kruga
 };
 
 // Inicijalizacija
@@ -69,7 +70,7 @@ function showScreen(screenId) {
     const homeBtn = document.getElementById('homeBtn');
     if (homeBtn) {
         if (screenId === 'startScreen' || 
-            screenId === 'gameScreen' || 
+        //    screenId === 'gameScreen' ||  //
             screenId === 'endScreen' ||
             screenId === 'customListsScreen') {
             homeBtn.classList.add('hidden');
@@ -93,7 +94,7 @@ function showScreen(screenId) {
    //     } else {
    //         themeBtn.classList.remove('hidden');
    //     }
-     }
+    }
 
 }
 
@@ -108,6 +109,10 @@ function showSetup() {
 function showCustomLists() {
     loadSavedLists();
     showScreen('customListsScreen');
+}
+
+function showRules() {
+    showScreen('rulesScreen');
 }
 
 // === SETUP KONTROLE ===
@@ -158,7 +163,15 @@ function loadCategories() {
     dostupneTeme.forEach(tema => {
         const item = document.createElement('div');
         item.className = 'category-item';
-        item.textContent = tema.naziv;
+        
+        // Dodaj 🔞 ikonu za zaštiÄ‡ene teme
+        if (isThemeProtected(tema.naziv)) {
+            item.textContent = `🔞 ${tema.naziv}`;
+            item.classList.add('protected-theme');
+        } else {
+            item.textContent = tema.naziv;
+        }
+        
         item.onclick = () => toggleCategory(tema.naziv, item);
         categoryList.appendChild(item);
     });
@@ -183,12 +196,23 @@ function toggleCategory(categoryName, element) {
     }
 }
 
-// === IMENA IGRAČA ===
+// === IMENA IGRAÃ„Å’A ===
 
-function showPlayerNames() {
+async function showPlayerNames() {
     if (gameState.selectedCategories.length === 0) {
         alert('Molimo odaberite barem jednu temu!');
         return;
+    }
+    
+    // Provjeri ima li zaštiÄ‡enih tema
+    const protectedThemes = gameState.selectedCategories.filter(theme => 
+        isThemeProtected(theme)
+    );
+    
+    if (protectedThemes.length > 0) {
+        const themeName = protectedThemes[0];
+        const allowed = await checkThemePasswordPrompt(themeName);
+        if (!allowed) return;
     }
     
     const container = document.getElementById('playerNamesContainer');
@@ -248,7 +272,7 @@ function fillRandomNames() {
     hapticFeedback('light');
 }
 
-// === POČETAK IGRE ===
+// === POÃ„Å’ETAK IGRE ===
 
 async function startGame() {
     try {
@@ -369,6 +393,7 @@ async function startRound() {
     await requestWakeLock();
     gameState.roundStats = { correct: 0, skipped: 0, totalWords: 0 };
     gameState.isPaused = false;
+    gameState.roundWords = []; // Reset riječi za novi krug
 
     // LOCK SCROLL tijekom igre - sprječava accidental refresh
     document.body.style.overflow = 'hidden';
@@ -500,6 +525,13 @@ function nextWord() {
 function correctWord() {
     if (gameState.isPaused) return;
     
+    // Dodaj riječ u roundWords array
+    gameState.roundWords.push({
+        word: gameState.currentWord,
+        status: 'correct',
+        timestamp: Date.now()
+    });
+    
     gameState.lastAction = { type: 'correct', word: gameState.currentWord };
     gameState.roundStats.correct++;
     gameState.roundStats.totalWords++;
@@ -514,6 +546,13 @@ function correctWord() {
 function skipWord() {
     if (gameState.isPaused) return;
     
+    // Dodaj riječ u roundWords array
+    gameState.roundWords.push({
+        word: gameState.currentWord,
+        status: 'skipped',
+        timestamp: Date.now()
+    });
+    
     gameState.lastAction = { type: 'skip', word: gameState.currentWord };
     gameState.roundStats.skipped++;
     gameState.roundStats.totalWords++;
@@ -527,6 +566,9 @@ function skipWord() {
 
 function endRound() {
     clearInterval(gameState.timerInterval);
+    
+    // Spremi score prije dodavanja roundScore (za correction kasnije)
+    gameState.scoreBeforeRound = gameState.teams[gameState.currentTeamIndex].score;
     
     gameState.teams[gameState.currentTeamIndex].score += gameState.roundScore;
     
@@ -555,6 +597,7 @@ function showAfterRound() {
         gameState.roundScore > 0 ? `+${gameState.roundScore}` : gameState.roundScore;
     
     updateScoreboard('scoreboardContainer');
+    renderRoundWords(); // Nova funkcija za prikaz riječi
     
     showScreen('afterRoundScreen');
 }
@@ -623,6 +666,72 @@ function checkWinner() {
     }
     
     return winners[0]; // Pobjednik!
+}
+
+// ============================================
+// KOREKCIJA RIJEČI - Pregled kruga
+// ============================================
+
+function renderRoundWords() {
+    const container = document.getElementById('roundWordsContainer');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    if (gameState.roundWords.length === 0) {
+        container.innerHTML = '<div class="empty-state">Nema riječi u ovom krugu</div>';
+        return;
+    }
+    
+    gameState.roundWords.forEach((wordObj, index) => {
+        const item = document.createElement('div');
+        item.className = 'round-word-item';
+        
+        const word = document.createElement('span');
+        word.className = 'round-word-text';
+        word.textContent = wordObj.word;
+        
+        const toggle = document.createElement('button');
+        toggle.className = `round-word-toggle ${wordObj.status}`;
+        toggle.textContent = wordObj.status === 'correct' ? '✓' : '✗';
+        toggle.onclick = () => toggleWordStatus(index);
+        
+        item.appendChild(word);
+        item.appendChild(toggle);
+        container.appendChild(item);
+    });
+}
+
+function toggleWordStatus(index) {
+    const wordObj = gameState.roundWords[index];
+    
+    // Toggle status
+    wordObj.status = wordObj.status === 'correct' ? 'skipped' : 'correct';
+    
+    // Preračunaj cijeli roundScore iz nule
+    gameState.roundScore = 0;
+    gameState.roundWords.forEach(w => {
+        if (w.status === 'correct') {
+            gameState.roundScore++;
+        } else if (w.status === 'skipped') {
+            gameState.roundScore--;
+        }
+    });
+    
+    // Update rezultat na ekranu
+    document.getElementById('roundResultScore').textContent = 
+        gameState.roundScore > 0 ? `+${gameState.roundScore}` : gameState.roundScore;
+    
+    // Update team score - vrati na stanje prije runde, pa dodaj novi roundScore
+    gameState.teams[gameState.currentTeamIndex].score = 
+        gameState.scoreBeforeRound + gameState.roundScore;
+    
+    // Re-render
+    renderRoundWords();
+    updateScoreboard('scoreboardContainer');
+    
+    // Feedback
+    hapticFeedback('light');
 }
 
 // === KRAJ IGRE ===
@@ -770,7 +879,7 @@ function deleteCustomList(index) {
 }
 
 // ============================================
-// NOVE FUNKCIJE - POBOLJŠANJA
+// NOVE FUNKCIJE - POBOLJÃ…Â ANJA
 // ============================================
 
 // PAUZA
@@ -808,7 +917,7 @@ function togglePause() {
     }
 }
 
-// ZVUČNI EFEKTI
+// ZVUÃ„Å’NI EFEKTI
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 const audioCtx = new AudioContext();
 
@@ -899,10 +1008,10 @@ function toggleSound() {
     
     const btn = document.getElementById('soundBtn');
     if (gameState.soundMuted) {
-        btn.innerHTML = '&#128263;'; // 🔇
+        btn.innerHTML = '&#128263;'; // Ã°Å¸â€â€¡
         btn.classList.add('muted');
     } else {
-        btn.innerHTML = '&#128266;'; // 🔊
+        btn.innerHTML = '&#128266;'; // Ã°Å¸â€Å 
         btn.classList.remove('muted');
     }
 }
@@ -1009,11 +1118,11 @@ function toggleTheme() {
     
     if (gameState.darkMode) {
         html.setAttribute('data-theme', 'dark');
-        btn.innerHTML = '&#9728;&#65039;'; // ☀️ Sunce za prebacivanje na light
+        btn.innerHTML = '&#9728;&#65039;'; // Ã¢Ëœâ‚¬Ã¯Â¸Â Sunce za prebacivanje na light
         localStorage.setItem('aliasTheme', 'dark');
     } else {
         html.removeAttribute('data-theme');
-        btn.innerHTML = '&#127769;'; // 🌙 Mjesec za prebacivanje na dark
+        btn.innerHTML = '&#127769;'; // Ã°Å¸Å’â„¢ Mjesec za prebacivanje na dark
         localStorage.setItem('aliasTheme', 'light');
     }
 }
@@ -1026,7 +1135,7 @@ function loadTheme() {
         gameState.darkMode = true;
         document.documentElement.setAttribute('data-theme', 'dark');
         const btn = document.getElementById('themeBtn');
-        if (btn) btn.innerHTML = '&#9728;&#65039;'; // ☀️
+        if (btn) btn.innerHTML = '&#9728;&#65039;'; // Ã¢Ëœâ‚¬Ã¯Â¸Â
     }
 }
 
